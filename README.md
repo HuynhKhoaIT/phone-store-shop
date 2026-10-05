@@ -22,10 +22,10 @@ Toàn bộ nằm trong `src/lib/shop.ts`:
 | Endpoint (trang quản trị) | Dùng cho |
 |---|---|
 | `GET /api/public/products` | Sản phẩm đang bán và bật **hiển thị trên web**. Các sản phẩm cùng loại + cùng tên được gom thành một dòng máy, `slug` = tên bỏ dấu |
-| `GET /api/public/branches` | Danh sách cửa hàng (không có thì ẩn mục) |
 | `GET /api/public/repair-prices` | Mục "Sửa chữa" (không có thì ẩn mục) |
 | `GET /api/public/posts`, `/posts/:slug` | Tin tức (`src/lib/news.ts`); admin viết bài ở Quản lý → Tin tức. Không có thì ẩn mục "Tin mới" |
 
+- **Địa chỉ, hotline các cơ sở**: sửa trong `src/lib/stores.ts` (cơ sở đầu tiên = hotline chính của nút Gọi / Zalo).
 - Sản phẩm không có ảnh (hoặc link ảnh lỗi) → ảnh mặc định `public/images/placeholder-*.svg`.
 - Ảnh, mô tả, giá khuyến mãi, nổi bật / thứ tự, ẩn / hiện trên web: **admin quản lý ở trang quản trị**.
 - Response được cache **60 giây**, nên thay đổi bên quản trị sẽ hiện lên web chậm tối đa khoảng 1 phút.
@@ -39,9 +39,9 @@ cp .env.example .env   # ADMIN_API_URL=http://localhost:3000, SHOP_NAME, SHOP_PH
 npm run dev            # http://localhost:3001 — cần trang quản trị đang chạy ở :3000
 ```
 
-Nút Zalo / Gọi chỉ hiện khi đã đặt `SHOP_PHONE` hoặc `SHOP_ZALO`.
+Nút Zalo / Gọi dùng hotline cơ sở chính; đặt `SHOP_PHONE` / `SHOP_ZALO` nếu muốn số khác.
 
 ## Deploy (Vercel)
 
-Tạo project Vercel mới từ repo này, đặt các biến `ADMIN_API_URL` (domain trang quản trị) và `SHOP_*`.
+Tạo project Vercel mới từ repo này, đặt biến `ADMIN_API_URL` (domain trang quản trị); các biến `SHOP_*` không bắt buộc.
 Bên trang quản trị, đặt `PUBLIC_API_ORIGINS` gồm domain của trang này nếu muốn giới hạn CORS. Trang này gọi API từ server nên không bị CORS chặn, nhưng nên giới hạn để an toàn.

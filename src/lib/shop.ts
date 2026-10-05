@@ -1,5 +1,6 @@
 import "server-only";
 import { slugify } from "./format";
+import { STORES, telHref } from "./stores";
 
 /**
  * Dữ liệu trang bán hàng, lấy từ API công khai của trang quản trị (phone-store-manager, /api/public/*).
@@ -85,7 +86,6 @@ export type ShopModel = {
 };
 
 export type ShopService = { service: string; minPrice: number; devices: number };
-export type ShopBranch = { id: number; name: string };
 
 /** Danh mục trên URL (/products?cat=iphone) ↔ category trong DB */
 export const SHOP_CATEGORIES = [
@@ -190,20 +190,14 @@ export async function getShopCatalog() {
   };
 }
 
-/** Chi nhánh đang hoạt động — endpoint /api/public/branches chưa có thì trả mảng rỗng (ẩn mục cửa hàng). */
-export async function getBranches(): Promise<ShopBranch[]> {
-  const data = await getJson<{ items: ShopBranch[] }>("/branches", true).catch(() => null);
-  return data?.items ?? [];
-}
-
-/** Thông tin liên hệ hiển thị trên trang (biến môi trường SHOP_*). */
+/** Thông tin liên hệ: hotline mặc định = cơ sở chính (src/lib/stores.ts), ghi đè bằng SHOP_PHONE / SHOP_ZALO. */
 export function getShopInfo() {
-  const phone = process.env.SHOP_PHONE?.trim() || null;
+  const phone = process.env.SHOP_PHONE?.trim() || STORES[0]?.phone || null;
   const zalo = process.env.SHOP_ZALO?.trim() || phone;
   return {
     name: process.env.SHOP_NAME?.trim() || "Tài Khoa Mobile",
     phone,
-    phoneHref: phone ? `tel:${phone.replace(/[^\d+]/g, "")}` : null,
+    phoneHref: phone ? telHref(phone) : null,
     zaloHref: zalo ? `https://zalo.me/${zalo.replace(/\D/g, "")}` : null,
     facebookHref: process.env.SHOP_FACEBOOK?.trim() || null,
   };

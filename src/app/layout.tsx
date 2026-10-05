@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getBranches, getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
+import { getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
+import { STORES, mapHref, telHref } from "@/lib/stores";
 import { ShopNav } from "@/components/ShopNav";
 import "./globals.css";
 
@@ -18,7 +19,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const info = getShopInfo();
-  const branches = await getBranches();
 
   return (
     <html lang="vi">
@@ -53,9 +53,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </div>
             <div>
               <p className="font-semibold text-[#1d1d1f]">Hệ thống cửa hàng</p>
-              <ul className="mt-3 space-y-2">
-                {branches.map((b) => (
-                  <li key={b.id}>{b.name}</li>
+              <ul className="mt-3 space-y-4">
+                {STORES.map((s) => (
+                  <li key={s.name}>
+                    <p className="text-[#1d1d1f]">{s.name}</p>
+                    <a href={mapHref(s.address)} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      {s.address}
+                    </a>
+                    <p>
+                      Hotline:{" "}
+                      <a href={telHref(s.phone)} className="text-[#1d1d1f] hover:underline">
+                        {s.phone}
+                      </a>
+                    </p>
+                  </li>
                 ))}
               </ul>
             </div>

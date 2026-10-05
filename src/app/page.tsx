@@ -1,7 +1,18 @@
 import Link from "next/link";
-import { BadgeCheck, BatteryFull, ChevronRight, CreditCard, MapPin, ShieldCheck, Wrench } from "lucide-react";
+import {
+  BadgeCheck,
+  BatteryFull,
+  ChevronRight,
+  CreditCard,
+  MapPin,
+  Navigation,
+  Phone,
+  ShieldCheck,
+  Wrench,
+} from "lucide-react";
 import { formatVND } from "@/lib/format";
-import { getBranches, getShopCatalog, getShopInfo, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
+import { getShopCatalog, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
+import { STORES, mapHref, telHref } from "@/lib/stores";
 import { getPosts } from "@/lib/news";
 import { ContactButtons } from "@/components/ContactButtons";
 import { PostCard } from "@/components/PostCard";
@@ -9,13 +20,11 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
 
 export default async function Home() {
-  const [{ models, featured, services, maxWarranty }, branches, news] = await Promise.all([
+  const [{ models, featured, services, maxWarranty }, news] = await Promise.all([
     getShopCatalog(),
-    getBranches(),
     // Tin tức không bắt buộc: API lỗi thì ẩn mục, không làm hỏng trang chủ
     getPosts({ pageSize: 3 }).catch(() => null),
   ]);
-  const info = getShopInfo();
 
   // Hero: sản phẩm admin đánh dấu nổi bật đầu tiên; chưa có thì iPhone mới về gần nhất / sản phẩm mới nhất
   const hero = featured[0] ?? models.find((m) => m.category === "IPHONE" && m.hasNew) ?? models[0];
@@ -155,20 +164,27 @@ export default async function Home() {
             Cầm máy tận tay. <br className="hidden sm:block" />
             Thử trước khi mua.
           </h2>
-          {branches.length > 0 && (
-            <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {branches.map((b) => (
-                <li key={b.id} className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-4">
-                  <MapPin size={18} className="shrink-0 text-[#2997ff]" aria-hidden />
-                  {b.name}
-                </li>
-              ))}
-            </ul>
-          )}
-          <ContactButtons dark className="mt-10" />
-          {!info.phoneHref && !info.zaloHref && (
-            <p className="mt-8 text-sm text-white/50">Liên hệ trực tiếp tại các chi nhánh của {info.name}.</p>
-          )}
+          <ul className="mt-10 grid gap-3 md:grid-cols-2">
+            {STORES.map((st) => (
+              <li key={st.name} className="flex flex-col rounded-2xl bg-white/10 p-6">
+                <p className="text-[19px] font-semibold tracking-tight">{st.name}</p>
+                <p className="mt-2 flex gap-2 text-[15px] text-white/75">
+                  <MapPin size={18} className="mt-0.5 shrink-0 text-[#2997ff]" aria-hidden />
+                  {st.address}
+                </p>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a href={telHref(st.phone)} className="btn-blue">
+                    <Phone size={18} aria-hidden />
+                    {st.phone}
+                  </a>
+                  <a href={mapHref(st.address)} target="_blank" rel="noopener noreferrer" className="btn-outline text-white">
+                    <Navigation size={18} aria-hidden />
+                    Chỉ đường
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
     </>
