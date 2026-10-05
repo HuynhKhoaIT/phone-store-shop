@@ -31,6 +31,7 @@ export function ShopNav({ shopName }: { shopName: string }) {
   }, [open]);
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur-xl backdrop-saturate-150">
       <nav className="container-shop flex h-14 items-center gap-6">
         <Link href="/" aria-label={`${shopName} — Trang chủ`} className="shrink-0">
@@ -65,19 +66,30 @@ export function ShopNav({ shopName }: { shopName: string }) {
           </button>
         </div>
       </nav>
-      {open && (
-        <div className="fixed inset-x-0 top-14 bottom-0 bg-white md:hidden">
-          <ul className="container-shop flex flex-col pt-4">
+    </header>
+    {/* Đặt ngoài <header>: backdrop-filter của header biến nó thành containing block cho phần tử fixed */}
+    {open && (
+      <div className="fixed inset-x-0 top-14 bottom-0 z-40 md:hidden">
+        {/* Lớp mờ phía sau: bấm để đóng menu */}
+        <button
+          type="button"
+          aria-label="Đóng menu"
+          onClick={() => setOpen(false)}
+          className="absolute inset-0 bg-black/30"
+        />
+        <div className="relative max-h-full overflow-y-auto rounded-b-2xl border-b border-black/5 bg-white shadow-lg">
+          <ul className="container-shop flex flex-col py-2">
             {LINKS.map((l) => (
               <li key={l.href}>
-                <Link href={l.href} className="block py-3 text-2xl font-semibold tracking-tight">
+                <Link href={l.href} className="block py-2.5 text-[17px] font-medium text-[#1d1d1f]">
                   {l.label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
-      )}
-    </header>
+      </div>
+    )}
+    </>
   );
 }
