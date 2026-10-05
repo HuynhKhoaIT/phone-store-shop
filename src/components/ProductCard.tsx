@@ -19,20 +19,20 @@ export function ProductCard({ model, className = "" }: { model: ShopModel; class
           className="p-8 transition duration-500 group-hover:scale-[1.04]"
         />
         {tag && (
-          <span className="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium backdrop-blur">
+          <span className="absolute top-3 left-3 rounded-full bg-white/90 px-2.5 py-1 text-[13px] font-medium backdrop-blur">
             {tag}
           </span>
         )}
         {model.maxDiscount > 0 && (
-          <span className="absolute top-3 right-3 rounded-full bg-[#e30000] px-2.5 py-1 text-xs font-semibold text-white">
+          <span className="absolute top-3 right-3 rounded-full bg-[#e30000] px-2.5 py-1 text-[13px] font-semibold text-white">
             -{model.maxDiscount}%
           </span>
         )}
       </div>
       <div className="mt-3 space-y-0.5 px-0.5">
-        <p className="text-[13px] text-[#6e6e73]">{model.brand ?? CATEGORY_LABEL[model.category]}</p>
+        <p className="text-[14px] text-[#6e6e73]">{model.brand ?? CATEGORY_LABEL[model.category]}</p>
         <h3 className="text-[17px] leading-snug font-semibold tracking-tight group-hover:underline">{model.name}</h3>
-        {options && <p className="text-[13px] text-[#6e6e73]">{options}</p>}
+        {options && <p className="text-[14px] text-[#6e6e73]">{options}</p>}
         <p className="pt-1 text-[15px] font-medium tabular-nums">
           {model.minPrice !== model.maxPrice && <span className="font-normal text-[#6e6e73]">Từ </span>}
           {formatVND(model.minPrice)}

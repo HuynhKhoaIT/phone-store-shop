@@ -38,7 +38,7 @@ export function ShopNav({ shopName }: { shopName: string }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/logo.png" alt={shopName} width={827} height={160} className="h-8 w-auto sm:h-9" />
         </Link>
-        <ul className="mx-auto hidden items-center gap-7 text-[13px] text-[#1d1d1f]/80 md:flex">
+        <ul className="mx-auto hidden items-center gap-7 text-[14px] text-[#1d1d1f]/80 md:flex">
           {LINKS.map((l) => (
             <li key={l.href}>
               <Link href={l.href} className="transition hover:text-[#1d1d1f]">

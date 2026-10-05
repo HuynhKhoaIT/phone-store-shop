@@ -50,7 +50,7 @@ export default async function Home() {
                 ["bg-[#f5f5f7]", "bg-[#eef1f6]", "bg-[#f6f1ea]"][i]
               }`}
             >
-              <p className="text-[13px] text-[#6e6e73]">{items.length} dòng sản phẩm</p>
+              <p className="text-[14px] text-[#6e6e73]">{items.length} dòng sản phẩm</p>
               <h2 className="mt-1 text-3xl font-semibold tracking-tight">{c.label}</h2>
               <span className="mt-3 inline-flex items-center text-[15px] text-[#0066cc] group-hover:underline">
                 Khám phá <ChevronRight size={16} aria-hidden />

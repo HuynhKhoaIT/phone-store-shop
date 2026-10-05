@@ -27,7 +27,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <ShopNav shopName={info.name} />
         </Suspense>
         <main className="flex-1">{children}</main>
-        <footer className="mt-24 bg-[#f5f5f7] text-[13px] text-[#6e6e73]">
+        <footer className="mt-24 bg-[#f5f5f7] text-[14px] text-[#6e6e73]">
           <div className="container-shop pt-12">
             <Link href="/" className="inline-block">
               {/* eslint-disable-next-line @next/next/no-img-element */}

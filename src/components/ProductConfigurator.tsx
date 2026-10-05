@@ -152,7 +152,7 @@ export function ProductConfigurator({
             </a>
           )}
         </div>
-        <p className="text-[13px] text-[#6e6e73]">
+        <p className="text-[14px] text-[#6e6e73]">
           {contact.zaloHref || contact.phoneHref
             ? `Liên hệ và báo mã SP #${unit.id} để được tư vấn nhanh.`
             : `Ghé cửa hàng và báo mã SP #${unit.id} để xem máy.`}
@@ -192,7 +192,7 @@ function Option({
       }`}
     >
       <span className="block text-[15px] font-semibold">{title}</span>
-      {sub && <span className="mt-0.5 block text-[13px] text-[#6e6e73] tabular-nums">{sub}</span>}
+      {sub && <span className="mt-0.5 block text-[14px] text-[#6e6e73] tabular-nums">{sub}</span>}
     </button>
   );
 }

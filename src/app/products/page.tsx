@@ -106,7 +106,7 @@ export default async function Products({ searchParams }: { searchParams: Promise
         </Link>
       </div>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#d2d2d7] pb-3 text-[13px]">
+      <div className="mt-8 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-[#d2d2d7] pb-3 text-[14px]">
         <p className="text-[#6e6e73]">
           {list.length} sản phẩm{q && <> cho “{q}”</>}
         </p>

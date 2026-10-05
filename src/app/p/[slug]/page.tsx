@@ -36,7 +36,7 @@ export default async function ProductDetail({ params }: Props) {
   return (
     <>
       <div className="container-shop pt-6">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[13px] text-[#6e6e73]">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-[14px] text-[#6e6e73]">
           <Link href="/products" className="hover:text-[#1d1d1f]">
             Sản phẩm
           </Link>
@@ -60,7 +60,7 @@ export default async function ProductDetail({ params }: Props) {
         </div>
 
         <div>
-          <p className="text-[13px] font-semibold text-[#bf4800]">
+          <p className="text-[14px] font-semibold text-[#bf4800]">
             {model.hasUsed && model.hasNew ? "Mới & máy cũ" : model.hasUsed ? "Máy cũ" : "Mới"}
           </p>
           <h1 className="mt-1 text-4xl font-semibold tracking-tight sm:text-5xl">{model.name}</h1>
