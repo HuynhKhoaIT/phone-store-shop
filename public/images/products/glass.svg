@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Kính cường lực">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#7dd3fc" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#7dd3fc" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e0f2fe" stop-opacity="0.95"/><stop offset="1" stop-color="#bae6fd" stop-opacity="0.75"/></linearGradient>
+  </defs>
+  <circle cx="200" cy="205" r="175" fill="url(#glow)"/>
+  <g filter="url(#shadow)">
+    <rect x="150" y="56" width="124" height="262" rx="24" fill="url(#glass)" stroke="#ffffff" stroke-width="3" transform="rotate(10 212 187)"/>
+    <rect x="128" y="50" width="124" height="262" rx="24" fill="url(#glass)" stroke="#ffffff" stroke-width="3"/>
+    <rect x="171" y="62" width="38" height="10" rx="5" fill="#ffffff" fill-opacity="0.9"/>
+    <path d="M150 140 L230 90" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-opacity="0.8"/>
+    <path d="M150 170 L200 139" stroke="#ffffff" stroke-width="5" stroke-linecap="round" stroke-opacity="0.7"/>
+  </g>
+</svg>

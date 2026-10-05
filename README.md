@@ -26,7 +26,7 @@ Toàn bộ nằm trong `src/lib/shop.ts`:
 | `GET /api/public/posts`, `/posts/:slug` | Tin tức (`src/lib/news.ts`); admin viết bài ở Quản lý → Tin tức. Không có thì ẩn mục "Tin mới" |
 
 - **Địa chỉ, hotline các cơ sở**: sửa trong `src/lib/stores.ts` (cơ sở đầu tiên = hotline chính của nút Gọi / Zalo).
-- Sản phẩm không có ảnh (hoặc link ảnh lỗi) → ảnh mặc định `public/images/placeholder-*.svg`.
+- Sản phẩm không có ảnh (hoặc link ảnh lỗi) → ảnh mặc định theo loại (`public/images/products/*.svg`: iPhone, Android, củ sạc, cáp, tai nghe, ốp lưng, kính cường lực, sạc dự phòng, đồng hồ; phụ kiện chọn theo từ khoá trong tên — xem `ProductImage.tsx`).
 - Ảnh, mô tả, giá khuyến mãi, nổi bật / thứ tự, ẩn / hiện trên web: **admin quản lý ở trang quản trị**.
 - Response được cache **60 giây**, nên thay đổi bên quản trị sẽ hiện lên web chậm tối đa khoảng 1 phút.
 - Giá nhập, IMEI, ghi chú nội bộ không có trong API (trang quản trị lọc ở `src/lib/public-api.ts`).

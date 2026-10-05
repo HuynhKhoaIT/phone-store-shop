@@ -56,7 +56,13 @@ export default async function Home() {
                 Khám phá <ChevronRight size={16} aria-hidden />
               </span>
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 transition duration-700 group-hover:scale-105">
-                <ProductImage src={cover?.imageUrl ?? null} alt={c.label} category={c.value} className="p-6" />
+                <ProductImage
+                  src={cover?.imageUrl ?? null}
+                  alt={c.label}
+                  name={cover?.name}
+                  category={c.value}
+                  className="p-6"
+                />
               </div>
             </Link>
           );

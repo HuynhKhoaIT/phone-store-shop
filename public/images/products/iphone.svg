@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="iPhone">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#93c5fd" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#93c5fd" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9ccd2"/><stop offset="0.5" stop-color="#eef0f3"/><stop offset="1" stop-color="#a7abb3"/></linearGradient>
+    <linearGradient id="back" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b5a6e"/><stop offset="1" stop-color="#2c3644"/></linearGradient>
+    <linearGradient id="bump" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d6c80"/><stop offset="1" stop-color="#3a4656"/></linearGradient>
+    <radialGradient id="lens" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#3b4b7a"/><stop offset="0.5" stop-color="#0d1020"/><stop offset="1" stop-color="#000"/></radialGradient>
+  </defs>
+  <circle cx="200" cy="205" r="175" fill="url(#glow)"/>
+  <g filter="url(#shadow)">
+    <rect x="260" y="104" width="4" height="52" rx="2" fill="#a7abb3"/>
+    <rect x="136" y="84" width="4" height="30" rx="2" fill="#a7abb3"/>
+    <rect x="138" y="44" width="124" height="268" rx="26" fill="url(#frame)"/>
+    <rect x="143" y="49" width="114" height="258" rx="22" fill="url(#back)"/>
+    <rect x="151" y="57" width="62" height="62" rx="17" fill="url(#bump)" stroke="#6f7d90" stroke-width="1"/>
+    <g stroke="#8b97a8" stroke-width="2.5">
+      <circle cx="168" cy="74" r="11" fill="url(#lens)"/>
+      <circle cx="168" cy="102" r="11" fill="url(#lens)"/>
+      <circle cx="195" cy="88" r="11" fill="url(#lens)"/>
+    </g>
+    <circle cx="198" cy="66" r="4" fill="#f5e6c8"/>
+    <circle cx="198" cy="110" r="3" fill="#1b2230"/>
+    <path d="M143 220 L257 150 L257 285 a22 22 0 0 1 -22 22 L165 307 a22 22 0 0 1 -22 -22 Z" fill="#ffffff" fill-opacity="0.05"/>
+  </g>
+</svg>

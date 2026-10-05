@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Đồng hồ thông minh">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fda4af" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#fda4af" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="case" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5e7eb"/><stop offset="1" stop-color="#9ca3af"/></linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f43f5e"/><stop offset="1" stop-color="#be123c"/></linearGradient>
+  </defs>
+  <circle cx="200" cy="205" r="175" fill="url(#glow)"/>
+  <g filter="url(#shadow)">
+    <rect x="160" y="36" width="80" height="110" rx="22" fill="url(#band)"/>
+    <rect x="160" y="254" width="80" height="110" rx="22" fill="url(#band)"/>
+    <rect x="132" y="120" width="136" height="160" rx="40" fill="url(#case)"/>
+    <rect x="140" y="128" width="120" height="144" rx="33" fill="#0b0b0f"/>
+    <rect x="268" y="160" width="9" height="30" rx="4.5" fill="#9ca3af"/>
+    <g fill="none" stroke-linecap="round" stroke-width="9">
+      <circle cx="200" cy="200" r="44" stroke="#f43f5e" stroke-dasharray="210 400" transform="rotate(-90 200 200)"/>
+      <circle cx="200" cy="200" r="31" stroke="#a3e635" stroke-dasharray="140 400" transform="rotate(-90 200 200)"/>
+      <circle cx="200" cy="200" r="18" stroke="#22d3ee" stroke-dasharray="80 400" transform="rotate(-90 200 200)"/>
+    </g>
+  </g>
+</svg>

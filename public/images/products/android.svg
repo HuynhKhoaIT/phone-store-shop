@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Điện thoại Android">
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6ee7b7" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#6ee7b7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+    </filter>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b5563"/><stop offset="0.5" stop-color="#9ca3af"/><stop offset="1" stop-color="#374151"/></linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#065f46"/><stop offset="0.5" stop-color="#0ea5e9"/><stop offset="1" stop-color="#a3e635"/></linearGradient>
+  </defs>
+  <circle cx="200" cy="205" r="175" fill="url(#glow)"/>
+  <g filter="url(#shadow)">
+    <rect x="262" y="96" width="4" height="40" rx="2" fill="#4b5563"/>
+    <rect x="262" y="146" width="4" height="24" rx="2" fill="#4b5563"/>
+    <rect x="136" y="42" width="128" height="272" rx="20" fill="url(#frame)"/>
+    <rect x="141" y="47" width="118" height="262" rx="16" fill="#0b0b0f"/>
+    <rect x="145" y="51" width="110" height="254" rx="13" fill="url(#screen)"/>
+    <circle cx="200" cy="64" r="5" fill="#0b0b0f"/>
+    <circle cx="200" cy="190" r="56" fill="none" stroke="#ffffff" stroke-opacity="0.25" stroke-width="10"/>
+    <circle cx="200" cy="190" r="32" fill="#ffffff" fill-opacity="0.15"/>
+    <rect x="182" y="292" width="36" height="3" rx="1.5" fill="#ffffff" fill-opacity="0.7"/>
+  </g>
+</svg>
