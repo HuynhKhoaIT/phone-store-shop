@@ -35,8 +35,8 @@ Toàn bộ nằm trong `src/lib/shop.ts`:
 
 ```bash
 npm install
-cp .env.example .env   # ADMIN_API_URL=http://localhost:3000, SHOP_NAME, SHOP_PHONE, SHOP_ZALO, SHOP_FACEBOOK
-npm run dev            # http://localhost:3001 — cần trang quản trị đang chạy ở :3000
+cp .env.example .env   # ADMIN_API_URL=http://localhost:3002, SHOP_NAME, SHOP_PHONE, SHOP_ZALO, SHOP_FACEBOOK
+npm run dev            # http://localhost:3001 — cần trang quản trị đang chạy ở :3002 (npm run dev bên phone-store-manager)
 ```
 
 Nút Zalo / Gọi dùng hotline cơ sở chính; đặt `SHOP_PHONE` / `SHOP_ZALO` nếu muốn số khác.
