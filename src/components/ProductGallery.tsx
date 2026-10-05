@@ -26,8 +26,7 @@ export function ProductGallery({ images, alt, category }: { images: string[]; al
                 i === index ? "border-[#0071e3]" : "border-transparent hover:border-[#d2d2d7]"
               }`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" loading="lazy" className="h-full w-full object-contain p-1.5" />
+              <ProductImage src={src} alt="" category={category} className="p-1.5" />
             </button>
           ))}
         </div>

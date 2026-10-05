@@ -1,8 +1,15 @@
-import { Headphones, Smartphone } from "lucide-react";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
+/** Ảnh mặc định (public/images) khi sản phẩm chưa có ảnh hoặc link ảnh admin nhập bị lỗi. */
+export function placeholderImage(category: string) {
+  return category === "ACCESSORY" ? "/images/placeholder-accessory.svg" : "/images/placeholder-phone.svg";
+}
 
 /**
- * Ảnh sản phẩm trên nền xám nhạt kiểu Apple; admin chưa thêm ảnh thì hiện hình minh hoạ.
- * Dùng <img> thường vì link ảnh có thể từ nhiều nguồn (không phải cấu hình domain cho next/image).
+ * Ảnh sản phẩm (nền do khung bên ngoài quyết định). Dùng <img> thường vì link ảnh do admin nhập từ nhiều nguồn
+ * (không phải cấu hình domain cho next/image).
  */
 export function ProductImage({
   src,
@@ -17,24 +24,26 @@ export function ProductImage({
   className?: string;
   priority?: boolean;
 }) {
-  if (src) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt={alt}
-        loading={priority ? "eager" : "lazy"}
-        className={`h-full w-full object-contain ${className}`}
-      />
-    );
-  }
-  const Icon = category === "ACCESSORY" ? Headphones : Smartphone;
+  // Link ảnh lỗi (404, bị chặn…) → chuyển sang ảnh mặc định
+  const [failed, setFailed] = useState<string | null>(null);
+  const url = src && src !== failed ? src : placeholderImage(category);
+  const ref = useRef<HTMLImageElement>(null);
+
+  // Ảnh lỗi trước khi React hydrate thì onError không chạy → kiểm tra lại sau khi mount
+  useEffect(() => {
+    const img = ref.current;
+    if (src && img?.complete && img.naturalWidth === 0) setFailed(src);
+  }, [src]);
+
   return (
-    <div className={`grid h-full w-full place-items-center ${className}`} role="img" aria-label={alt}>
-      <div className="relative grid aspect-square w-2/5 place-items-center">
-        <div className="absolute inset-0 rounded-full bg-gradient-to-br from-sky-300/50 via-violet-300/40 to-amber-200/50 blur-2xl" />
-        <Icon className="relative h-full w-full text-current opacity-80" strokeWidth={0.9} aria-hidden />
-      </div>
-    </div>
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      ref={ref}
+      src={url}
+      alt={alt}
+      loading={priority ? "eager" : "lazy"}
+      onError={() => src && setFailed(src)}
+      className={`h-full w-full object-contain ${className}`}
+    />
   );
 }

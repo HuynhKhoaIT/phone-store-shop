@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Phụ kiện">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#dfe1e6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fcd34d" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#fcd34d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <circle cx="200" cy="205" r="170" fill="url(#glow)"/>
+  <!-- Cáp sạc -->
+  <path d="M200 262 C 200 320, 120 300, 110 340" fill="none" stroke="#e6e8ec" stroke-width="9" stroke-linecap="round"/>
+  <path d="M200 262 C 200 320, 120 300, 110 340" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+  <g filter="url(#shadow)">
+    <!-- Hộp tai nghe -->
+    <rect x="132" y="112" width="136" height="150" rx="44" fill="url(#body)"/>
+    <path d="M132 168 H268" stroke="#c9ccd3" stroke-width="2"/>
+    <circle cx="200" cy="196" r="4" fill="#9ca3af"/>
+    <rect x="186" y="252" width="28" height="6" rx="3" fill="#c9ccd3"/>
+  </g>
+</svg>
