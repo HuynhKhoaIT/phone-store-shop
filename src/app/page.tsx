@@ -165,6 +165,8 @@ export default async function Home() {
       {/* Cửa hàng + liên hệ */}
       <section id="cua-hang" className="container-shop mt-24 scroll-mt-14">
         <div className="overflow-hidden rounded-3xl bg-[#111] px-7 py-14 text-white sm:px-14 sm:py-20">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/logo-light.png" alt="" width={827} height={160} className="mb-8 h-9 w-auto sm:h-10" />
           <p className="eyebrow text-[#2997ff]">Ghé cửa hàng</p>
           <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
             Cầm máy tận tay. <br className="hidden sm:block" />

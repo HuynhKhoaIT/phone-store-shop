@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Menu, Search, Smartphone, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 
 const LINKS = [
   { href: "/products?cat=iphone", label: "iPhone" },
@@ -33,9 +33,9 @@ export function ShopNav({ shopName }: { shopName: string }) {
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur-xl backdrop-saturate-150">
       <nav className="container-shop flex h-14 items-center gap-6">
-        <Link href="/" className="flex items-center gap-2 text-[17px] font-semibold tracking-tight">
-          <Smartphone size={20} strokeWidth={2.2} aria-hidden />
-          {shopName}
+        <Link href="/" aria-label={`${shopName} — Trang chủ`} className="shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/logo.png" alt={shopName} width={827} height={160} className="h-8 w-auto sm:h-9" />
         </Link>
         <ul className="mx-auto hidden items-center gap-7 text-[13px] text-[#1d1d1f]/80 md:flex">
           {LINKS.map((l) => (

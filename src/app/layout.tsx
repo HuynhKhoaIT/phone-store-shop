@@ -28,7 +28,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Suspense>
         <main className="flex-1">{children}</main>
         <footer className="mt-24 bg-[#f5f5f7] text-[13px] text-[#6e6e73]">
-          <div className="container-shop grid gap-8 py-12 sm:grid-cols-3">
+          <div className="container-shop pt-12">
+            <Link href="/" className="inline-block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/logo.png" alt={info.name} width={827} height={160} className="h-9 w-auto" />
+            </Link>
+          </div>
+          <div className="container-shop grid gap-8 pt-8 pb-12 sm:grid-cols-3">
             <div>
               <p className="font-semibold text-[#1d1d1f]">Sản phẩm</p>
               <ul className="mt-3 space-y-2">
