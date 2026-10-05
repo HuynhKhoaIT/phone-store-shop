@@ -1,0 +1,32 @@
+/** Nhãn / định dạng dùng chung server + client. Giữ giống phone-store-manager (src/lib/format.ts, product-labels.ts). */
+
+export function formatVND(n: number) {
+  return `${n.toLocaleString("vi-VN")} đ`;
+}
+
+export const CONDITION_LABEL: Record<string, string> = { NEW: "Mới 100%", USED: "Máy cũ" };
+
+export function gbLabel(gb: number) {
+  return gb >= 1024 ? `${gb / 1024}TB` : `${gb}GB`;
+}
+
+/** "8/256GB", "128GB" hoặc "RAM 8GB" */
+export function capacityLabel(p: { ramGb?: number | null; storageGb?: number | null }) {
+  if (p.ramGb && p.storageGb) return `${p.ramGb}/${gbLabel(p.storageGb)}`;
+  if (p.storageGb) return gbLabel(p.storageGb);
+  if (p.ramGb) return `RAM ${p.ramGb}GB`;
+  return null;
+}
+
+/** Bỏ dấu tiếng Việt → slug dùng cho URL và tìm kiếm */
+export function slugify(s: string) {
+  return s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/gi, "d")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+export const CATEGORY_LABEL: Record<string, string> = { IPHONE: "iPhone", ANDROID: "Android", ACCESSORY: "Phụ kiện" };

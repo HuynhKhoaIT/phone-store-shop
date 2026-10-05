@@ -1,0 +1,253 @@
+import Link from "next/link";
+import { BadgeCheck, BatteryFull, ChevronRight, CreditCard, MapPin, ShieldCheck, Wrench } from "lucide-react";
+import { formatVND } from "@/lib/format";
+import { getBranches, getShopCatalog, getShopInfo, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
+import { ContactButtons } from "@/components/ContactButtons";
+import { ProductCard } from "@/components/ProductCard";
+import { ProductImage } from "@/components/ProductImage";
+
+export default async function Home() {
+  const [{ models, featured, services, maxWarranty }, branches] = await Promise.all([
+    getShopCatalog(),
+    getBranches(),
+  ]);
+  const info = getShopInfo();
+
+  // Hero: sản phẩm admin đánh dấu nổi bật đầu tiên; chưa có thì iPhone mới về gần nhất / sản phẩm mới nhất
+  const hero = featured[0] ?? models.find((m) => m.category === "IPHONE" && m.hasNew) ?? models[0];
+  const picks = featured.filter((m) => m !== hero);
+  const latest = models.filter((m) => m !== hero).slice(0, 10);
+  const used = models.filter((m) => m.hasUsed && m.category !== "ACCESSORY").slice(0, 4);
+  const accessories = models.filter((m) => m.category === "ACCESSORY").slice(0, 8);
+
+  return (
+    <>
+      <Hero model={hero} />
+
+      {/* Danh mục — ô lớn kiểu Nike */}
+      <section className="container-shop mt-3 grid gap-3 sm:grid-cols-3">
+        {SHOP_CATEGORIES.map((c, i) => {
+          const items = models.filter((m) => m.category === c.value);
+          const cover = items.find((m) => m.imageUrl) ?? items[0];
+          return (
+            <Link
+              key={c.key}
+              href={`/products?cat=${c.key}`}
+              className={`group relative flex aspect-[4/5] flex-col overflow-hidden rounded-3xl p-7 sm:aspect-[3/4] ${
+                ["bg-[#f5f5f7]", "bg-[#eef1f6]", "bg-[#f6f1ea]"][i]
+              }`}
+            >
+              <p className="text-[13px] text-[#6e6e73]">{items.length} dòng sản phẩm</p>
+              <h2 className="mt-1 text-3xl font-semibold tracking-tight">{c.label}</h2>
+              <span className="mt-3 inline-flex items-center text-[15px] text-[#0066cc] group-hover:underline">
+                Khám phá <ChevronRight size={16} aria-hidden />
+              </span>
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 transition duration-700 group-hover:scale-105">
+                <ProductImage src={cover?.imageUrl ?? null} alt={c.label} category={c.value} className="p-6" />
+              </div>
+            </Link>
+          );
+        })}
+      </section>
+
+      {picks.length > 0 && (
+        <Carousel title="Nổi bật." subtitle="Được chọn riêng cho bạn." href="/products" models={picks} />
+      )}
+
+      {latest.length > 0 && (
+        <Carousel title="Mới về." subtitle="Hàng vừa lên kệ tại cửa hàng." href="/products" models={latest} />
+      )}
+
+      {/* Lý do mua hàng */}
+      <section className="container-shop mt-24">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+          Vì sao chọn chúng tôi. <span className="text-[#6e6e73]">Yên tâm hơn.</span>
+        </h2>
+        <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Feature
+            icon={ShieldCheck}
+            title={maxWarranty > 0 ? `Bảo hành đến ${maxWarranty} tháng` : "Bảo hành tại cửa hàng"}
+            text="Tra cứu bảo hành nhanh bằng số điện thoại tại bất kỳ chi nhánh nào."
+          />
+          <Feature
+            icon={BatteryFull}
+            title="Máy cũ minh bạch"
+            text="Ghi rõ tình trạng và % pin từng máy. Bạn chọn đúng chiếc mình muốn."
+          />
+          <Feature
+            icon={BadgeCheck}
+            title="Giá niêm yết rõ ràng"
+            text="Giá trên web là giá bán tại quầy, cập nhật theo kho hàng thực tế."
+          />
+          <Feature
+            icon={CreditCard}
+            title="Tiền mặt hoặc chuyển khoản"
+            text="Thanh toán linh hoạt khi nhận máy tại cửa hàng."
+          />
+        </div>
+      </section>
+
+      {used.length > 0 && (
+        <section className="container-shop mt-24">
+          <SectionHeader title="Máy cũ. Giá mềm." subtitle="Ghi rõ tình trạng, % pin." href="/products?cond=used" />
+          <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-8 lg:grid-cols-4">
+            {used.map((m) => (
+              <ProductCard key={m.slug} model={m} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {accessories.length > 0 && (
+        <Carousel
+          title="Phụ kiện."
+          subtitle="Sạc, cáp, tai nghe, ốp lưng…"
+          href="/products?cat=accessory"
+          models={accessories}
+        />
+      )}
+
+      {services.length > 0 && (
+        <section id="sua-chua" className="mt-24 scroll-mt-14 bg-[#f5f5f7] py-20">
+          <div className="container-shop">
+            <p className="eyebrow text-[#bf4800]">Dịch vụ</p>
+            <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">Sửa chữa điện thoại.</h2>
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {services.slice(0, 6).map((s) => (
+                <div key={s.service} className="flex items-center gap-4 rounded-2xl bg-white p-6">
+                  <div className="grid size-12 shrink-0 place-items-center rounded-full bg-[#f5f5f7]">
+                    <Wrench size={20} aria-hidden />
+                  </div>
+                  <div>
+                    <p className="text-[17px] font-semibold">{s.service}</p>
+                    <p className="text-[15px] text-[#6e6e73] tabular-nums">
+                      Từ {formatVND(s.minPrice)} · {s.devices} dòng máy
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <ContactButtons className="mt-10" />
+          </div>
+        </section>
+      )}
+
+      {/* Cửa hàng + liên hệ */}
+      <section id="cua-hang" className="container-shop mt-24 scroll-mt-14">
+        <div className="overflow-hidden rounded-3xl bg-[#111] px-7 py-14 text-white sm:px-14 sm:py-20">
+          <p className="eyebrow text-[#2997ff]">Ghé cửa hàng</p>
+          <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
+            Cầm máy tận tay. <br className="hidden sm:block" />
+            Thử trước khi mua.
+          </h2>
+          {branches.length > 0 && (
+            <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {branches.map((b) => (
+                <li key={b.id} className="flex items-center gap-3 rounded-2xl bg-white/10 px-5 py-4">
+                  <MapPin size={18} className="shrink-0 text-[#2997ff]" aria-hidden />
+                  {b.name}
+                </li>
+              ))}
+            </ul>
+          )}
+          <ContactButtons dark className="mt-10" />
+          {!info.phoneHref && !info.zaloHref && (
+            <p className="mt-8 text-sm text-white/50">Liên hệ trực tiếp tại các chi nhánh của {info.name}.</p>
+          )}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function Hero({ model }: { model: ShopModel | undefined }) {
+  return (
+    <section className="bg-black text-white">
+      <div className="container-shop flex flex-col items-center pt-16 text-center sm:pt-24">
+        {model ? (
+          <>
+            <p className="eyebrow text-[#2997ff]">{model.featured ? "Nổi bật" : "Mới về"}</p>
+            <h1 className="mt-3 text-5xl font-semibold tracking-tight sm:text-7xl">{model.name}</h1>
+            <p className="mt-4 text-xl text-white/70 sm:text-2xl">
+              {model.minPrice !== model.maxPrice ? "Chỉ từ " : "Giá "}
+              <span className="text-white tabular-nums">{formatVND(model.minPrice)}</span>
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link href={`/p/${model.slug}`} className="btn-blue">
+                Xem chi tiết
+              </Link>
+              <Link href="/products" className="btn-outline text-[#2997ff]">
+                Xem tất cả sản phẩm
+              </Link>
+            </div>
+            <div className="relative mt-12 aspect-[16/10] w-full max-w-3xl">
+              <div className="absolute inset-x-[15%] bottom-0 h-1/2 rounded-full bg-[#2997ff]/25 blur-3xl" />
+              <div className="relative h-full w-full text-white">
+                <ProductImage src={model.imageUrl} alt={model.name} category={model.category} priority />
+              </div>
+            </div>
+          </>
+        ) : (
+          <div className="pb-24">
+            <h1 className="text-5xl font-semibold tracking-tight sm:text-7xl">Điện thoại & phụ kiện.</h1>
+            <p className="mt-4 text-xl text-white/70">
+              Hàng mới đang được cập nhật. Ghé cửa hàng hoặc liên hệ để được tư vấn.
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function SectionHeader({ title, subtitle, href }: { title: string; subtitle: string; href: string }) {
+  return (
+    <div className="flex items-end justify-between gap-4">
+      <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+        {title} <span className="text-[#6e6e73]">{subtitle}</span>
+      </h2>
+      <Link
+        href={href}
+        className="hidden shrink-0 items-center text-[15px] text-[#0066cc] hover:underline sm:inline-flex"
+      >
+        Xem tất cả <ChevronRight size={16} aria-hidden />
+      </Link>
+    </div>
+  );
+}
+
+/** Hàng sản phẩm cuộn ngang (kiểu Apple Store / Nike "Trending"). */
+function Carousel({
+  title,
+  subtitle,
+  href,
+  models,
+}: {
+  title: string;
+  subtitle: string;
+  href: string;
+  models: ShopModel[];
+}) {
+  return (
+    <section className="mt-24">
+      <div className="container-shop">
+        <SectionHeader title={title} subtitle={subtitle} href={href} />
+      </div>
+      <div className="no-scrollbar mt-8 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto px-4 pb-2 sm:scroll-px-6 sm:px-6 xl:px-[calc((100%-1200px)/2+1.5rem)]">
+        {models.map((m) => (
+          <ProductCard key={m.slug} model={m} className="w-[70%] shrink-0 snap-start sm:w-[300px]" />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function Feature({ icon: Icon, title, text }: { icon: typeof ShieldCheck; title: string; text: string }) {
+  return (
+    <div className="rounded-3xl bg-[#f5f5f7] p-7">
+      <Icon size={30} strokeWidth={1.6} aria-hidden />
+      <p className="mt-6 text-[19px] font-semibold tracking-tight">{title}</p>
+      <p className="mt-2 text-[15px] leading-relaxed text-[#6e6e73]">{text}</p>
+    </div>
+  );
+}

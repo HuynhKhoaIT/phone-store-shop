@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+/* Phong cách Apple / Nike: trắng–đen, chữ lớn, nút bo tròn, nền xám nhạt cho ảnh sản phẩm */
+:root {
+  color-scheme: light;
+}
+
+body {
+  background: #fff;
+  color: #1d1d1f;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@layer components {
+  .container-shop {
+    @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
+  }
+  .btn {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-6 text-[15px] font-medium text-white transition hover:bg-[#3a3a3a] active:scale-[0.98];
+  }
+  .btn-blue {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#0071e3] px-6 text-[15px] font-medium text-white transition hover:bg-[#0077ed] active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full border border-current px-6 text-[15px] font-medium transition hover:bg-black/5 active:scale-[0.98];
+  }
+  .chip {
+    @apply inline-flex h-9 shrink-0 items-center rounded-full border border-[#d2d2d7] px-4 text-sm whitespace-nowrap transition hover:border-[#1d1d1f];
+  }
+  .chip[aria-current="true"] {
+    @apply border-[#1d1d1f] bg-[#1d1d1f] text-white;
+  }
+  .eyebrow {
+    @apply text-sm font-semibold tracking-wide uppercase;
+  }
+}
+
+/* Thanh cuộn ngang (carousel) không hiện scrollbar */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
