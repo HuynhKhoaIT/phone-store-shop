@@ -44,6 +44,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     Máy cũ giá tốt
                   </Link>
                 </li>
+                <li>
+                  <Link href="/tin-tuc" className="hover:underline">
+                    Tin tức & khuyến mãi
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

@@ -2,14 +2,18 @@ import Link from "next/link";
 import { BadgeCheck, BatteryFull, ChevronRight, CreditCard, MapPin, ShieldCheck, Wrench } from "lucide-react";
 import { formatVND } from "@/lib/format";
 import { getBranches, getShopCatalog, getShopInfo, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
+import { getPosts } from "@/lib/news";
 import { ContactButtons } from "@/components/ContactButtons";
+import { PostCard } from "@/components/PostCard";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
 
 export default async function Home() {
-  const [{ models, featured, services, maxWarranty }, branches] = await Promise.all([
+  const [{ models, featured, services, maxWarranty }, branches, news] = await Promise.all([
     getShopCatalog(),
     getBranches(),
+    // Tin tức không bắt buộc: API lỗi thì ẩn mục, không làm hỏng trang chủ
+    getPosts({ pageSize: 3 }).catch(() => null),
   ]);
   const info = getShopInfo();
 
@@ -128,6 +132,17 @@ export default async function Home() {
               ))}
             </div>
             <ContactButtons className="mt-10" />
+          </div>
+        </section>
+      )}
+
+      {news && news.items.length > 0 && (
+        <section className="container-shop mt-24">
+          <SectionHeader title="Tin mới." subtitle="Khuyến mãi, mẹo hay." href="/tin-tuc" />
+          <div className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {news.items.map((p) => (
+              <PostCard key={p.id} post={p} />
+            ))}
           </div>
         </section>
       )}

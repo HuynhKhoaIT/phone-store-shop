@@ -15,7 +15,7 @@ function apiUrl(path: string) {
 }
 
 /** GET JSON từ API quản trị. `optional` = endpoint chưa có (404) thì trả null thay vì lỗi. */
-async function getJson<T>(path: string, optional = false): Promise<T | null> {
+export async function getJson<T>(path: string, optional = false): Promise<T | null> {
   const res = await fetch(apiUrl(path), { next: { revalidate: REVALIDATE_SECONDS } });
   if (optional && res.status === 404) return null;
   if (!res.ok) throw new Error(`API ${path} lỗi ${res.status}`);

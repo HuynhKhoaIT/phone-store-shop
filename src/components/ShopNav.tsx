@@ -11,6 +11,7 @@ const LINKS = [
   { href: "/products?cat=accessory", label: "Phụ kiện" },
   { href: "/products?cond=used", label: "Máy cũ" },
   { href: "/#sua-chua", label: "Sửa chữa" },
+  { href: "/tin-tuc", label: "Tin tức" },
   { href: "/#cua-hang", label: "Cửa hàng" },
 ];
 

@@ -30,3 +30,13 @@ export function slugify(s: string) {
 }
 
 export const CATEGORY_LABEL: Record<string, string> = { IPHONE: "iPhone", ANDROID: "Android", ACCESSORY: "Phụ kiện" };
+
+/** "05/10/2026" theo giờ Việt Nam */
+export function formatDateVN(iso: string) {
+  return new Intl.DateTimeFormat("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(iso));
+}
