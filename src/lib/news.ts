@@ -1,4 +1,5 @@
 import "server-only";
+import { isRealImage } from "./format";
 import { getJson } from "./shop";
 
 /** Tin tức lấy từ API công khai của trang quản trị (/api/public/posts) — admin viết bài ở Quản lý → Tin tức. */
@@ -39,10 +40,17 @@ export async function getPosts(opts: { category?: string; q?: string; page?: num
   if (opts.q) p.set("q", opts.q);
   p.set("page", String(opts.page ?? 1));
   p.set("pageSize", String(opts.pageSize ?? 12));
-  return (await getJson<PostPage>(`/posts?${p}`, true)) ?? EMPTY;
+  const data = (await getJson<PostPage>(`/posts?${p}`, true)) ?? EMPTY;
+  return { ...data, items: data.items.map(cleanCover) };
 }
 
 /** Một bài viết + bài liên quan; không có (nháp, chưa tới giờ đăng, sai slug) → null. */
 export async function getPost(slug: string) {
-  return getJson<{ post: Post; related: PostSummary[] }>(`/posts/${encodeURIComponent(slug)}`, true);
+  const data = await getJson<{ post: Post; related: PostSummary[] }>(`/posts/${encodeURIComponent(slug)}`, true);
+  return data && { post: cleanCover(data.post), related: data.related.map(cleanCover) };
+}
+
+/** Ảnh bìa giữ chỗ (placehold.co…) → null để hiện khối màu theo chuyên mục */
+function cleanCover<T extends PostSummary>(p: T): T {
+  return isRealImage(p.coverImageUrl) ? p : { ...p, coverImageUrl: null };
 }

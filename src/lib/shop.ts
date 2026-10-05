@@ -1,5 +1,5 @@
 import "server-only";
-import { slugify } from "./format";
+import { isRealImage, slugify } from "./format";
 import { STORES, telHref } from "./stores";
 
 /**
@@ -138,7 +138,7 @@ export async function getShopCatalog() {
     }
     m.brand ??= p.brand;
     m.description ??= p.description;
-    for (const img of p.images) if (!m.images.includes(img)) m.images.push(img);
+    for (const img of p.images) if (isRealImage(img) && !m.images.includes(img)) m.images.push(img);
     m.featured ||= p.featured;
     m.sortOrder = Math.min(m.sortOrder, p.sortOrder);
     m.minPrice = Math.min(m.minPrice, p.finalPrice);

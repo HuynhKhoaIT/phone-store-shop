@@ -40,3 +40,13 @@ export function formatDateVN(iso: string) {
     year: "numeric",
   }).format(new Date(iso));
 }
+
+/**
+ * Ảnh "giữ chỗ" (placehold.co, dummyimage…) — thường có trong dữ liệu mẫu, chỉ là ô màu có chữ.
+ * Coi như không có ảnh để website dùng ảnh mặc định đẹp hơn (public/images/products).
+ */
+const PLACEHOLDER_HOSTS = /^(https?:)?\/\/([a-z0-9-]+\.)*(placehold\.co|placehold\.it|placeholder\.com|dummyimage\.com|fakeimg\.pl)(\/|$)/i;
+
+export function isRealImage(url: string | null | undefined): url is string {
+  return !!url && !PLACEHOLDER_HOSTS.test(url.trim());
+}
