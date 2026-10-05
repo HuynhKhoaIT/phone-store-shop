@@ -201,7 +201,7 @@ export function getShopInfo() {
   const phone = process.env.SHOP_PHONE?.trim() || null;
   const zalo = process.env.SHOP_ZALO?.trim() || phone;
   return {
-    name: process.env.SHOP_NAME?.trim() || "Phone Store",
+    name: process.env.SHOP_NAME?.trim() || "Tài Khoa Mobile",
     phone,
     phoneHref: phone ? `tel:${phone.replace(/[^\d+]/g, "")}` : null,
     zaloHref: zalo ? `https://zalo.me/${zalo.replace(/\D/g, "")}` : null,

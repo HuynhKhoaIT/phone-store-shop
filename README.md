@@ -1,4 +1,4 @@
-# Phone Store Shop
+# Tài Khoa Mobile — Website
 
 Trang giới thiệu sản phẩm / marketing công khai cho cửa hàng điện thoại, giao diện theo phong cách Apple / Nike.
 Dữ liệu lấy từ **API công khai của trang quản trị** [`phone-store-manager`](../phone-store-manager) (`/api/public/*`). Repo này không kết nối database.
