@@ -53,4 +53,4 @@ Biến môi trường: xem `.env.example` (`ADMIN_API_URL` bắt buộc; `SHOP_N
 - Class có sẵn: `.container-shop`, `.btn`, `.btn-accent`, `.btn-outline`, `.chip`, `.eyebrow`, `.prose-shop` (nội dung bài viết).
 - Cỡ chữ nhỏ nhất: 14px cho chữ thường, 13px cho nhãn nổi trên ảnh.
 - Header dùng `backdrop-blur`, nên header trở thành containing block cho phần tử `position: fixed` bên trong nó. Lớp phủ / menu `fixed` phải đặt **ngoài** `<header>`.
-- Logo: `public/images/logo.png` (nền sáng), `logo-light.png` (nền tối). Logo hiện màu xanh dương, chưa có bản cam.
+- Logo: `public/images/logo.png` (nền sáng), `logo-light.png` (nền tối, chữ "Tài Khoa" trắng), nền trong suốt, tỉ lệ 1736×327 — tách nền từ ảnh gốc "Glossy Orange TK Mobile Logo.png" (không lưu trong repo). Favicon `src/app/icon.png`, `apple-icon.png` = ô TK cam.

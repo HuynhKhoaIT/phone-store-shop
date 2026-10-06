@@ -36,7 +36,7 @@ export function ShopNav({ shopName }: { shopName: string }) {
       <nav className="container-shop flex h-14 items-center gap-6">
         <Link href="/" aria-label={`${shopName} — Trang chủ`} className="shrink-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo.png" alt={shopName} width={827} height={160} className="h-8 w-auto sm:h-9" />
+          <img src="/images/logo.png" alt={shopName} width={1736} height={327} className="h-8 w-auto sm:h-9" />
         </Link>
         <ul className="mx-auto hidden items-center gap-7 text-[14px] text-[#1d1d1f]/80 md:flex">
           {LINKS.map((l) => (

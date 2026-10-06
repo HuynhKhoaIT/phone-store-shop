@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="container-shop pt-12">
             <Link href="/" className="inline-block">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/logo.png" alt={info.name} width={827} height={160} className="h-9 w-auto" />
+              <img src="/images/logo.png" alt={info.name} width={1736} height={327} className="h-9 w-auto" />
             </Link>
           </div>
           <div className="container-shop grid gap-8 pt-8 pb-12 sm:grid-cols-3">
