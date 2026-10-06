@@ -140,7 +140,7 @@ export function ProductConfigurator({
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           {contact.zaloHref && (
-            <a href={contact.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-blue h-12 flex-1">
+            <a href={contact.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-accent h-12 flex-1">
               <MessageCircle size={18} aria-hidden />
               Nhắn Zalo tư vấn
             </a>
@@ -188,7 +188,7 @@ function Option({
       aria-pressed={selected}
       onClick={onClick}
       className={`rounded-xl border-2 px-4 py-3.5 text-left transition ${
-        selected ? "border-[#0071e3]" : "border-[#d2d2d7] hover:border-[#86868b]"
+        selected ? "border-accent" : "border-[#d2d2d7] hover:border-[#86868b]"
       }`}
     >
       <span className="block text-[15px] font-semibold">{title}</span>

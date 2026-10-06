@@ -24,7 +24,7 @@ export function PostCover({ post, className = "" }: { post: PostSummary; classNa
 export function PostMeta({ post }: { post: PostSummary }) {
   return (
     <p className="text-[14px] text-[#6e6e73]">
-      <span className="font-semibold text-[#bf4800]">{post.categoryLabel}</span> · {formatDateVN(post.publishedAt)} ·{" "}
+      <span className="font-semibold text-accent">{post.categoryLabel}</span> · {formatDateVN(post.publishedAt)} ·{" "}
       {post.readingMinutes} phút đọc
     </p>
   );

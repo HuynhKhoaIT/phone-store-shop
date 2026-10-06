@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Màu nhấn cam (kiểu iPhone 17 Pro). accent: nút, link, viền chọn — đủ tương phản với chữ trắng / nền trắng.
+   accent-bright: chữ cam trên nền đen. */
+@theme {
+  --color-accent: #cf4a0b;
+  --color-accent-hover: #b8420a;
+  --color-accent-bright: #ff8a3d;
+}
+
 /* Phong cách Apple / Nike: trắng–đen, chữ lớn, nút bo tròn, nền xám nhạt cho ảnh sản phẩm */
 :root {
   color-scheme: light;
@@ -19,8 +27,8 @@ body {
   .btn {
     @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#111] px-6 text-[15px] font-medium text-white transition hover:bg-[#3a3a3a] active:scale-[0.98];
   }
-  .btn-blue {
-    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-[#0071e3] px-6 text-[15px] font-medium text-white transition hover:bg-[#0077ed] active:scale-[0.98];
+  .btn-accent {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-full bg-accent px-6 text-[15px] font-medium text-white transition hover:bg-accent-hover active:scale-[0.98];
   }
   .btn-outline {
     @apply inline-flex h-11 items-center justify-center gap-2 rounded-full border border-current px-6 text-[15px] font-medium transition hover:bg-black/5 active:scale-[0.98];
@@ -68,7 +76,7 @@ body {
   font-weight: 600;
 }
 .prose-shop a {
-  color: #0066cc;
+  color: var(--color-accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }

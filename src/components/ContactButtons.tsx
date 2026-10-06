@@ -8,7 +8,7 @@ export function ContactButtons({ className = "", dark = false }: { className?: s
   return (
     <div className={`flex flex-wrap gap-3 ${className}`}>
       {info.zaloHref && (
-        <a href={info.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-blue">
+        <a href={info.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-accent">
           <MessageCircle size={18} aria-hidden />
           Nhắn Zalo
         </a>

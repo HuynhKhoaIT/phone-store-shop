@@ -60,7 +60,7 @@ export default async function ProductDetail({ params }: Props) {
         </div>
 
         <div>
-          <p className="text-[14px] font-semibold text-[#bf4800]">
+          <p className="text-[14px] font-semibold text-accent">
             {model.hasUsed && model.hasNew ? "Mới & máy cũ" : model.hasUsed ? "Máy cũ" : "Mới"}
           </p>
           <h1 className="mt-1 text-4xl font-semibold tracking-tight sm:text-5xl">{model.name}</h1>

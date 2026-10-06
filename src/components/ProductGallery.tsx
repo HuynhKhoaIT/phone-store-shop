@@ -23,7 +23,7 @@ export function ProductGallery({ images, alt, category }: { images: string[]; al
               aria-pressed={i === index}
               onClick={() => setIndex(i)}
               className={`size-20 shrink-0 overflow-hidden rounded-xl border-2 bg-[#f5f5f7] transition ${
-                i === index ? "border-[#0071e3]" : "border-transparent hover:border-[#d2d2d7]"
+                i === index ? "border-accent" : "border-transparent hover:border-[#d2d2d7]"
               }`}
             >
               <ProductImage src={src} alt="" name={alt} category={category} className="p-1.5" />

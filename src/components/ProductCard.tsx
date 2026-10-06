@@ -24,7 +24,7 @@ export function ProductCard({ model, className = "" }: { model: ShopModel; class
           </span>
         )}
         {model.maxDiscount > 0 && (
-          <span className="absolute top-3 right-3 rounded-full bg-[#e30000] px-2.5 py-1 text-[13px] font-semibold text-white">
+          <span className="absolute top-3 right-3 rounded-full bg-[#1d1d1f] px-2.5 py-1 text-[13px] font-semibold text-white">
             -{model.maxDiscount}%
           </span>
         )}

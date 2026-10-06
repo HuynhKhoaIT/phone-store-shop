@@ -83,7 +83,7 @@ export default async function Products({ searchParams }: { searchParams: Promise
           type="search"
           aria-label="Tìm sản phẩm"
           placeholder="Tìm iPhone 15, Galaxy, tai nghe…"
-          className="h-12 w-full rounded-full bg-[#f5f5f7] pr-4 pl-11 text-[15px] outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0071e3]"
+          className="h-12 w-full rounded-full bg-[#f5f5f7] pr-4 pl-11 text-[15px] outline-none transition focus:bg-white focus:ring-2 focus:ring-accent"
         />
       </form>
 

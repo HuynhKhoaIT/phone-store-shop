@@ -60,7 +60,7 @@ export default async function News({ searchParams }: { searchParams: Promise<Par
             type="search"
             aria-label="Tìm bài viết"
             placeholder="Tìm bài viết…"
-            className="h-10 w-full rounded-full bg-[#f5f5f7] pr-4 pl-10 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-[#0071e3]"
+            className="h-10 w-full rounded-full bg-[#f5f5f7] pr-4 pl-10 text-sm outline-none transition focus:bg-white focus:ring-2 focus:ring-accent"
           />
         </form>
       </div>

@@ -34,7 +34,7 @@ export default async function Article({ params }: Props) {
     <>
       <article className="container-shop pt-8 sm:pt-12">
         <div className="mx-auto max-w-[720px]">
-          <Link href="/tin-tuc" className="inline-flex items-center text-[15px] text-[#0066cc] hover:underline">
+          <Link href="/tin-tuc" className="inline-flex items-center text-[15px] text-accent hover:underline">
             <ChevronLeft size={16} aria-hidden /> Tin tức
           </Link>
           <div className="mt-6">

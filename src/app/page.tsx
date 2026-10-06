@@ -52,7 +52,7 @@ export default async function Home() {
             >
               <p className="text-[14px] text-[#6e6e73]">{items.length} dòng sản phẩm</p>
               <h2 className="mt-1 text-3xl font-semibold tracking-tight">{c.label}</h2>
-              <span className="mt-3 inline-flex items-center text-[15px] text-[#0066cc] group-hover:underline">
+              <span className="mt-3 inline-flex items-center text-[15px] text-accent group-hover:underline">
                 Khám phá <ChevronRight size={16} aria-hidden />
               </span>
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-3/5 transition duration-700 group-hover:scale-105">
@@ -129,7 +129,7 @@ export default async function Home() {
       {services.length > 0 && (
         <section id="sua-chua" className="mt-24 scroll-mt-14 bg-[#f5f5f7] py-20">
           <div className="container-shop">
-            <p className="eyebrow text-[#bf4800]">Dịch vụ</p>
+            <p className="eyebrow text-accent">Dịch vụ</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">Sửa chữa điện thoại.</h2>
             <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {services.slice(0, 6).map((s) => (
@@ -167,7 +167,7 @@ export default async function Home() {
         <div className="overflow-hidden rounded-3xl bg-[#111] px-7 py-14 text-white sm:px-14 sm:py-20">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/logo-light.png" alt="" width={827} height={160} className="mb-8 h-9 w-auto sm:h-10" />
-          <p className="eyebrow text-[#2997ff]">Ghé cửa hàng</p>
+          <p className="eyebrow text-accent-bright">Ghé cửa hàng</p>
           <h2 className="mt-2 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
             Cầm máy tận tay. <br className="hidden sm:block" />
             Thử trước khi mua.
@@ -177,11 +177,11 @@ export default async function Home() {
               <li key={st.name} className="flex flex-col rounded-2xl bg-white/10 p-6">
                 <p className="text-[19px] font-semibold tracking-tight">{st.name}</p>
                 <p className="mt-2 flex gap-2 text-[15px] text-white/75">
-                  <MapPin size={18} className="mt-0.5 shrink-0 text-[#2997ff]" aria-hidden />
+                  <MapPin size={18} className="mt-0.5 shrink-0 text-accent-bright" aria-hidden />
                   {st.address}
                 </p>
                 <div className="mt-6 flex flex-wrap gap-3">
-                  <a href={telHref(st.phone)} className="btn-blue">
+                  <a href={telHref(st.phone)} className="btn-accent">
                     <Phone size={18} aria-hidden />
                     {st.phone}
                   </a>
@@ -205,22 +205,22 @@ function Hero({ model }: { model: ShopModel | undefined }) {
       <div className="container-shop flex flex-col items-center pt-16 text-center sm:pt-24">
         {model ? (
           <>
-            <p className="eyebrow text-[#2997ff]">{model.featured ? "Nổi bật" : "Mới về"}</p>
+            <p className="eyebrow text-accent-bright">{model.featured ? "Nổi bật" : "Mới về"}</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-tight sm:text-7xl">{model.name}</h1>
             <p className="mt-4 text-xl text-white/70 sm:text-2xl">
               {model.minPrice !== model.maxPrice ? "Chỉ từ " : "Giá "}
               <span className="text-white tabular-nums">{formatVND(model.minPrice)}</span>
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <Link href={`/p/${model.slug}`} className="btn-blue">
+              <Link href={`/p/${model.slug}`} className="btn-accent">
                 Xem chi tiết
               </Link>
-              <Link href="/products" className="btn-outline text-[#2997ff]">
+              <Link href="/products" className="btn-outline text-accent-bright">
                 Xem tất cả sản phẩm
               </Link>
             </div>
             <div className="relative mt-12 aspect-[16/10] w-full max-w-3xl">
-              <div className="absolute inset-x-[15%] bottom-0 h-1/2 rounded-full bg-[#2997ff]/25 blur-3xl" />
+              <div className="absolute inset-x-[15%] bottom-0 h-1/2 rounded-full bg-accent-bright/25 blur-3xl" />
               <div className="relative h-full w-full text-white">
                 <ProductImage src={model.imageUrl} alt={model.name} category={model.category} priority />
               </div>
@@ -247,7 +247,7 @@ function SectionHeader({ title, subtitle, href }: { title: string; subtitle: str
       </h2>
       <Link
         href={href}
-        className="hidden shrink-0 items-center text-[15px] text-[#0066cc] hover:underline sm:inline-flex"
+        className="hidden shrink-0 items-center text-[15px] text-accent hover:underline sm:inline-flex"
       >
         Xem tất cả <ChevronRight size={16} aria-hidden />
       </Link>
