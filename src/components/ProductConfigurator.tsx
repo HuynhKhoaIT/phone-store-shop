@@ -140,13 +140,13 @@ export function ProductConfigurator({
         </p>
         <div className="flex flex-col gap-3 sm:flex-row">
           {contact.zaloHref && (
-            <a href={contact.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-accent h-12 flex-1">
+            <a href={contact.zaloHref} target="_blank" rel="noopener noreferrer" className="btn-accent h-12 sm:flex-1">
               <MessageCircle size={18} aria-hidden />
               Nhắn Zalo tư vấn
             </a>
           )}
           {contact.phoneHref && (
-            <a href={contact.phoneHref} className="btn h-12 flex-1">
+            <a href={contact.phoneHref} className="btn h-12 sm:flex-1">
               <Phone size={18} aria-hidden />
               Gọi {contact.phone}
             </a>
