@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { BatteryMedium, MessageCircle, Phone, ShieldCheck, Store } from "lucide-react";
-import { CONDITION_LABEL, capacityLabel, formatVND } from "@/lib/format";
+import { CONDITION_LABEL, capacityLabel, formatPrice, formatVND, lowestPrice, priceRank } from "@/lib/format";
 import type { ShopUnit } from "@/lib/shop";
 
 type Contact = { phone: string | null; phoneHref: string | null; zaloHref: string | null };
@@ -12,8 +12,11 @@ const capOf = (u: ShopUnit) => capacityLabel(u) ?? "";
 const colorOf = (u: ShopUnit) => u.variant ?? "";
 
 function minPrice(units: ShopUnit[], key: (u: ShopUnit) => string, value: string) {
-  return Math.min(...units.filter((u) => key(u) === value).map((u) => u.price));
+  return lowestPrice(units.filter((u) => key(u) === value).map((u) => u.price));
 }
+
+/** "Từ 12.990.000 đ" hoặc "Liên hệ" khi mọi máy trong nhóm đều là giá liên hệ */
+const fromPrice = (n: number) => (n > 0 ? `Từ ${formatVND(n)}` : "Liên hệ");
 
 /**
  * Chọn cấu hình kiểu trang mua iPhone: Tình trạng → Dung lượng → Màu → (máy cũ) chọn đúng máy theo % pin.
@@ -39,13 +42,15 @@ export function ProductConfigurator({
   const condSel = cond && conds.includes(cond) ? cond : conds[0];
   const byCond = units.filter((u) => u.condition === condSel);
 
-  const caps = uniq(byCond.map(capOf)).sort((a, b) => minPrice(byCond, capOf, a) - minPrice(byCond, capOf, b));
+  const caps = uniq(byCond.map(capOf)).sort(
+    (a, b) => priceRank(minPrice(byCond, capOf, a)) - priceRank(minPrice(byCond, capOf, b)),
+  );
   const capSel = cap !== undefined && caps.includes(cap) ? cap : caps[0];
   const byCap = byCond.filter((u) => capOf(u) === capSel);
 
   const colors = uniq(byCap.map(colorOf));
   const colorSel = color !== undefined && colors.includes(color) ? color : colors[0];
-  const matches = byCap.filter((u) => colorOf(u) === colorSel).sort((a, b) => a.price - b.price);
+  const matches = byCap.filter((u) => colorOf(u) === colorSel).sort((a, b) => priceRank(a.price) - priceRank(b.price));
   const unit = matches.find((u) => u.id === unitId) ?? matches[0];
 
   const label = [name, capSel, colorSel, condSel === "USED" ? "(Cũ)" : null].filter(Boolean).join(" ");
@@ -54,7 +59,7 @@ export function ProductConfigurator({
     <div className="space-y-8">
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
         <p className={`text-3xl font-semibold tracking-tight tabular-nums ${unit.price < unit.listPrice ? "text-[#e30000]" : ""}`}>
-          {formatVND(unit.price)}
+          {formatPrice(unit.price)}
         </p>
         {unit.price < unit.listPrice && (
           <p className="text-[17px] text-[#6e6e73] tabular-nums line-through">{formatVND(unit.listPrice)}</p>
@@ -69,7 +74,7 @@ export function ProductConfigurator({
               selected={c === condSel}
               onClick={() => setCond(c)}
               title={CONDITION_LABEL[c] ?? c}
-              sub={`Từ ${formatVND(minPrice(units, (u) => u.condition, c))}`}
+              sub={fromPrice(minPrice(units, (u) => u.condition, c))}
             />
           ))}
         </Group>
@@ -83,7 +88,7 @@ export function ProductConfigurator({
               selected={c === capSel}
               onClick={() => setCap(c)}
               title={c || "Tiêu chuẩn"}
-              sub={`Từ ${formatVND(minPrice(byCond, capOf, c))}`}
+              sub={fromPrice(minPrice(byCond, capOf, c))}
             />
           ))}
         </Group>
@@ -106,7 +111,7 @@ export function ProductConfigurator({
               selected={u.id === unit.id}
               onClick={() => setUnitId(u.id)}
               title={u.batteryHealth ? `Pin ${u.batteryHealth}%` : `Máy ${i + 1}`}
-              sub={formatVND(u.price)}
+              sub={formatPrice(u.price)}
             />
           ))}
         </Group>

@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!model) return { title: "Không tìm thấy sản phẩm" };
   return {
     title: model.name,
-    description: `${model.name} giá từ ${formatVND(model.minPrice)}. Xem các phiên bản đang có tại cửa hàng.`,
+    description: `${model.name}${model.minPrice > 0 ? ` giá từ ${formatVND(model.minPrice)}` : ", liên hệ để được báo giá"}. Xem các phiên bản đang có tại cửa hàng.`,
     openGraph: model.imageUrl ? { images: [model.imageUrl] } : undefined,
   };
 }

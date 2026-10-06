@@ -4,6 +4,25 @@ export function formatVND(n: number) {
   return `${n.toLocaleString("vi-VN")} đ`;
 }
 
+/**
+ * Giá 0 = "Liên hệ": admin để trống giá (giá sửa chữa) hoặc bật "Web hiện Liên hệ thay giá" (sản phẩm),
+ * vì giá thay đổi theo linh kiện / thị trường. API trả price = finalPrice = 0.
+ */
+export function formatPrice(n: number) {
+  return n > 0 ? formatVND(n) : "Liên hệ";
+}
+
+/** Giá thấp nhất trong các giá có niêm yết; toàn bộ là giá liên hệ → 0. */
+export function lowestPrice(prices: number[]) {
+  const listed = prices.filter((n) => n > 0);
+  return listed.length ? Math.min(...listed) : 0;
+}
+
+/** Khoá sắp xếp theo giá: giá liên hệ xếp cuối. */
+export function priceRank(n: number) {
+  return n > 0 ? n : Number.POSITIVE_INFINITY;
+}
+
 export const CONDITION_LABEL: Record<string, string> = { NEW: "Mới 100%", USED: "Máy cũ" };
 
 export function gbLabel(gb: number) {

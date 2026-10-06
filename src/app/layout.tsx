@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
 import { STORES, mapHref, telHref } from "@/lib/stores";
 import { ShopNav } from "@/components/ShopNav";
+import { MobileContactBar } from "@/components/MobileContactBar";
 import "./globals.css";
 
 // Render theo request (không cần DB lúc build); dữ liệu đã được cache 60s trong lib/shop.ts
@@ -22,7 +23,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang="vi">
-      <body className="flex min-h-screen flex-col antialiased">
+      <body className="flex min-h-screen flex-col pb-[calc(4.25rem+env(safe-area-inset-bottom))] antialiased md:pb-0">
         <Suspense fallback={<div className="h-14 border-b border-black/5" />}>
           <ShopNav shopName={info.name} />
         </Suspense>
@@ -48,6 +49,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <li>
                   <Link href="/products?cond=used" className="hover:underline">
                     Máy cũ giá tốt
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/sua-chua" className="hover:underline">
+                    Sửa chữa điện thoại
                   </Link>
                 </li>
                 <li>
@@ -109,6 +115,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             để được báo giá chính xác.
           </div>
         </footer>
+        <MobileContactBar />
       </body>
     </html>
   );

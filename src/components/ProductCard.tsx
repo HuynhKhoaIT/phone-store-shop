@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CATEGORY_LABEL, formatVND } from "@/lib/format";
+import { CATEGORY_LABEL, formatPrice } from "@/lib/format";
 import type { ShopModel } from "@/lib/shop";
 import { ProductImage } from "./ProductImage";
 
@@ -34,8 +34,10 @@ export function ProductCard({ model, className = "" }: { model: ShopModel; class
         <h3 className="text-[17px] leading-snug font-semibold tracking-tight group-hover:underline">{model.name}</h3>
         {options && <p className="text-[14px] text-[#6e6e73]">{options}</p>}
         <p className="pt-1 text-[15px] font-medium tabular-nums">
-          {model.minPrice !== model.maxPrice && <span className="font-normal text-[#6e6e73]">Từ </span>}
-          {formatVND(model.minPrice)}
+          {model.minPrice > 0 && model.minPrice !== model.maxPrice && (
+            <span className="font-normal text-[#6e6e73]">Từ </span>
+          )}
+          {formatPrice(model.minPrice)}
         </p>
       </div>
     </Link>

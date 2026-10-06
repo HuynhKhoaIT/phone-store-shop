@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import { slugify } from "@/lib/format";
+import { lowestPrice, priceRank, slugify } from "@/lib/format";
 import { getShopCatalog, SHOP_CATEGORIES } from "@/lib/shop";
 import { ProductCard } from "@/components/ProductCard";
 
@@ -47,12 +47,13 @@ export default async function Products({ searchParams }: { searchParams: Promise
         count: units.length,
         hasNew: cond === "new",
         hasUsed: cond === "used",
-        minPrice: Math.min(...prices),
+        minPrice: lowestPrice(prices),
         maxPrice: Math.max(...prices),
       };
     });
-  if (sort === "price-asc") list.sort((a, b) => a.minPrice - b.minPrice);
-  if (sort === "price-desc") list.sort((a, b) => b.minPrice - a.minPrice);
+  // Giá liên hệ luôn xếp cuối, kể cả khi sắp giá cao → thấp
+  if (sort === "price-asc") list.sort((a, b) => priceRank(a.minPrice) - priceRank(b.minPrice));
+  if (sort === "price-desc") list.sort((a, b) => (b.minPrice || -1) - (a.minPrice || -1));
 
   const qs = (patch: Partial<Params>) => {
     const next = { cat: cat?.key, cond, sort: sort === "new" ? "" : sort, q, ...patch };

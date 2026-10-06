@@ -1,5 +1,5 @@
 import "server-only";
-import { isRealImage, slugify } from "./format";
+import { isRealImage, lowestPrice, priceRank, slugify } from "./format";
 import { STORES, telHref } from "./stores";
 
 /**
@@ -125,8 +125,8 @@ export async function getShopCatalog() {
         description: null,
         featured: false,
         sortOrder: p.sortOrder,
-        minPrice: p.finalPrice,
-        maxPrice: p.finalPrice,
+        minPrice: 0,
+        maxPrice: 0,
         maxDiscount: 0,
         hasNew: false,
         hasUsed: false,
@@ -141,9 +141,7 @@ export async function getShopCatalog() {
     for (const img of p.images) if (isRealImage(img) && !m.images.includes(img)) m.images.push(img);
     m.featured ||= p.featured;
     m.sortOrder = Math.min(m.sortOrder, p.sortOrder);
-    m.minPrice = Math.min(m.minPrice, p.finalPrice);
-    m.maxPrice = Math.max(m.maxPrice, p.finalPrice);
-    if (p.finalPrice < p.price) m.maxDiscount = Math.max(m.maxDiscount, Math.round((1 - p.finalPrice / p.price) * 100));
+    if (p.finalPrice > 0 && p.finalPrice < p.price) m.maxDiscount = Math.max(m.maxDiscount, Math.round((1 - p.finalPrice / p.price) * 100));
     if (p.condition === "USED") m.hasUsed = true;
     else m.hasNew = true;
     m.count++;
@@ -168,7 +166,10 @@ export async function getShopCatalog() {
     if (seen.has(m.slug)) m.slug = `${m.slug}-${m.category.toLowerCase()}`;
     seen.add(m.slug);
     m.imageUrl = m.images[0] ?? null;
-    m.units.sort((a, b) => a.price - b.price);
+    m.units.sort((a, b) => priceRank(a.price) - priceRank(b.price));
+    // Giá liên hệ (0) không tính vào "Từ ..."; cả dòng máy đều liên hệ → 0
+    m.minPrice = lowestPrice(m.units.map((u) => u.price));
+    m.maxPrice = Math.max(...m.units.map((u) => u.price));
   }
   models.sort((a, b) => b.latestAt - a.latestAt);
 
@@ -176,7 +177,7 @@ export async function getShopCatalog() {
   for (const r of repairs?.items ?? []) {
     const s = services.get(r.service);
     if (s) {
-      s.minPrice = Math.min(s.minPrice, r.price);
+      s.minPrice = lowestPrice([s.minPrice, r.price]);
       s.devices++;
     } else services.set(r.service, { service: r.service, minPrice: r.price, devices: 1 });
   }
@@ -188,6 +189,23 @@ export async function getShopCatalog() {
     services: [...services.values()].sort((a, b) => b.devices - a.devices),
     maxWarranty: products.reduce((max, p) => Math.max(max, p.warrantyMonths), 0),
   };
+}
+
+/** Một dòng trong bảng giá sửa chữa (/api/public/repair-prices). */
+export type RepairPrice = { service: string; device: string; price: number; warranty: string | null };
+
+/** Bảng giá sửa chữa gom theo dịch vụ (dịch vụ nhiều dòng máy lên trước). Endpoint chưa có → rỗng. */
+export async function getRepairPrices() {
+  const data = await getJson<{ items: RepairPrice[] }>("/repair-prices", true);
+  const groups = new Map<string, RepairPrice[]>();
+  for (const r of data?.items ?? []) {
+    const list = groups.get(r.service);
+    if (list) list.push(r);
+    else groups.set(r.service, [r]);
+  }
+  return [...groups.entries()]
+    .map(([service, items]) => ({ service, slug: slugify(service), items }))
+    .sort((a, b) => b.items.length - a.items.length);
 }
 
 /** Thông tin liên hệ: hotline mặc định = cơ sở chính (src/lib/stores.ts), ghi đè bằng SHOP_PHONE / SHOP_ZALO. */

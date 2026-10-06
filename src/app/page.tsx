@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Wrench,
 } from "lucide-react";
-import { formatVND } from "@/lib/format";
+import { formatVND, slugify } from "@/lib/format";
 import { getShopCatalog, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
 import { STORES, mapHref, telHref } from "@/lib/stores";
 import { getPosts } from "@/lib/news";
@@ -133,20 +133,29 @@ export default async function Home() {
             <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">Sửa chữa điện thoại.</h2>
             <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {services.slice(0, 6).map((s) => (
-                <div key={s.service} className="flex items-center gap-4 rounded-2xl bg-white p-6">
+                <Link
+                  key={s.service}
+                  href={`/sua-chua#${slugify(s.service)}`}
+                  className="flex items-center gap-4 rounded-2xl bg-white p-6 transition hover:shadow-md"
+                >
                   <div className="grid size-12 shrink-0 place-items-center rounded-full bg-[#f5f5f7]">
                     <Wrench size={20} aria-hidden />
                   </div>
                   <div>
                     <p className="text-[17px] font-semibold">{s.service}</p>
                     <p className="text-[15px] text-[#6e6e73] tabular-nums">
-                      Từ {formatVND(s.minPrice)} · {s.devices} dòng máy
+                      {s.minPrice > 0 ? `Từ ${formatVND(s.minPrice)}` : "Liên hệ báo giá"} · {s.devices} dòng máy
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
-            <ContactButtons className="mt-10" />
+            <div className="mt-10 flex flex-wrap gap-3">
+              <Link href="/sua-chua" className="btn-outline">
+                Xem bảng giá đầy đủ <ChevronRight size={16} aria-hidden />
+              </Link>
+              <ContactButtons />
+            </div>
           </div>
         </section>
       )}
@@ -208,8 +217,14 @@ function Hero({ model }: { model: ShopModel | undefined }) {
             <p className="eyebrow text-accent-bright">{model.featured ? "Nổi bật" : "Mới về"}</p>
             <h1 className="mt-3 text-5xl font-semibold tracking-tight sm:text-7xl">{model.name}</h1>
             <p className="mt-4 text-xl text-white/70 sm:text-2xl">
-              {model.minPrice !== model.maxPrice ? "Chỉ từ " : "Giá "}
-              <span className="text-white tabular-nums">{formatVND(model.minPrice)}</span>
+              {model.minPrice > 0 ? (
+                <>
+                  {model.minPrice !== model.maxPrice ? "Chỉ từ " : "Giá "}
+                  <span className="text-white tabular-nums">{formatVND(model.minPrice)}</span>
+                </>
+              ) : (
+                "Liên hệ để được báo giá"
+              )}
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link href={`/p/${model.slug}`} className="btn-accent">
