@@ -1,31 +1,65 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="iPhone">
+  <!-- Ảnh mặc định cho iPhone chưa có ảnh: mặt trước kiểu iPhone 17 Pro Max (viền cam, Dynamic Island, màn hình khoá) -->
   <defs>
     <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#93c5fd" stop-opacity="0.42"/>
-      <stop offset="1" stop-color="#93c5fd" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ff8a3d" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff8a3d" stop-opacity="0"/>
     </radialGradient>
     <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
-      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#000" flood-opacity="0.18"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#5c2203" flood-opacity="0.28"/>
     </filter>
-    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9ccd2"/><stop offset="0.5" stop-color="#eef0f3"/><stop offset="1" stop-color="#a7abb3"/></linearGradient>
-    <linearGradient id="back" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b5a6e"/><stop offset="1" stop-color="#2c3644"/></linearGradient>
-    <linearGradient id="bump" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5d6c80"/><stop offset="1" stop-color="#3a4656"/></linearGradient>
-    <radialGradient id="lens" cx="0.4" cy="0.35" r="0.7"><stop offset="0" stop-color="#3b4b7a"/><stop offset="0.5" stop-color="#0d1020"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <!-- Khung nhôm: sáng ở hai mép như kim loại bo cong -->
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#a9481a"/>
+      <stop offset="0.06" stop-color="#f7b285"/>
+      <stop offset="0.5" stop-color="#e27536"/>
+      <stop offset="0.94" stop-color="#f7b285"/>
+      <stop offset="1" stop-color="#a9481a"/>
+    </linearGradient>
+    <!-- Hình nền màn hình khoá -->
+    <radialGradient id="wall" cx="0.3" cy="0.78" r="0.95">
+      <stop offset="0" stop-color="#ffc08f"/>
+      <stop offset="0.35" stop-color="#f26b21"/>
+      <stop offset="0.7" stop-color="#8a2a06"/>
+      <stop offset="1" stop-color="#2a0c02"/>
+    </radialGradient>
+    <linearGradient id="glare" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.16"/>
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
   </defs>
-  <circle cx="200" cy="205" r="175" fill="url(#glow)"/>
+
+  <circle cx="200" cy="205" r="185" fill="url(#glow)"/>
+
   <g filter="url(#shadow)">
-    <rect x="260" y="104" width="4" height="52" rx="2" fill="#a7abb3"/>
-    <rect x="136" y="84" width="4" height="30" rx="2" fill="#a7abb3"/>
-    <rect x="138" y="44" width="124" height="268" rx="26" fill="url(#frame)"/>
-    <rect x="143" y="49" width="114" height="258" rx="22" fill="url(#back)"/>
-    <rect x="151" y="57" width="62" height="62" rx="17" fill="url(#bump)" stroke="#6f7d90" stroke-width="1"/>
-    <g stroke="#8b97a8" stroke-width="2.5">
-      <circle cx="168" cy="74" r="11" fill="url(#lens)"/>
-      <circle cx="168" cy="102" r="11" fill="url(#lens)"/>
-      <circle cx="195" cy="88" r="11" fill="url(#lens)"/>
-    </g>
-    <circle cx="198" cy="66" r="4" fill="#f5e6c8"/>
-    <circle cx="198" cy="110" r="3" fill="#1b2230"/>
-    <path d="M143 220 L257 150 L257 285 a22 22 0 0 1 -22 22 L165 307 a22 22 0 0 1 -22 -22 Z" fill="#ffffff" fill-opacity="0.05"/>
+    <!-- Nút cạnh: Action + âm lượng (trái), nguồn + Camera Control (phải) -->
+    <rect x="127" y="108" width="2.2" height="16" rx="1.1" fill="#c9652e"/>
+    <rect x="127" y="136" width="2.2" height="28" rx="1.1" fill="#c9652e"/>
+    <rect x="127" y="172" width="2.2" height="28" rx="1.1" fill="#c9652e"/>
+    <rect x="270.8" y="140" width="2.2" height="38" rx="1.1" fill="#c9652e"/>
+    <rect x="270.8" y="228" width="2" height="22" rx="1" fill="#c9652e"/>
+
+    <rect x="129" y="46" width="142" height="308" rx="35" fill="url(#frame)"/>
+    <rect x="132" y="49" width="136" height="302" rx="32" fill="#0b0b0d"/>
+    <rect x="137" y="54" width="126" height="292" rx="28" fill="url(#wall)"/>
+
+    <!-- Dynamic Island -->
+    <rect x="178" y="63" width="44" height="13" rx="6.5" fill="#000"/>
+
+    <!-- Màn hình khoá: giờ -->
+    <text x="200" y="132" text-anchor="middle" fill="#fff" fill-opacity="0.95"
+      font-family="-apple-system, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="44" font-weight="600">9:41</text>
+
+    <!-- Nút đèn pin, camera ở đáy màn hình khoá -->
+    <circle cx="160" cy="312" r="11" fill="#000" fill-opacity="0.35"/>
+    <path d="M157 305 h6 l-1 5 v8 h-4 v-8 z" fill="#fff" fill-opacity="0.9"/>
+    <circle cx="240" cy="312" r="11" fill="#000" fill-opacity="0.35"/>
+    <rect x="233.5" y="307" width="13" height="10" rx="2" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="1.6"/>
+    <circle cx="240" cy="312" r="2.6" fill="none" stroke="#fff" stroke-opacity="0.9" stroke-width="1.6"/>
+
+    <!-- Thanh Home -->
+    <rect x="178" y="335" width="44" height="3.5" rx="1.75" fill="#fff" fill-opacity="0.85"/>
+
+    <rect x="137" y="54" width="126" height="292" rx="28" fill="url(#glare)"/>
   </g>
 </svg>
