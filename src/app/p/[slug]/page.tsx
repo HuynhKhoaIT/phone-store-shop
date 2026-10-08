@@ -9,6 +9,7 @@ import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
 import { ShareButtons } from "@/components/ShareButtons";
+import { PromotionList } from "@/components/PromotionCard";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -41,7 +42,7 @@ export default async function ProductDetail({ params }: Props) {
   const { model, models } = await findModel((await params).slug);
   if (!model) notFound();
 
-  const info = getShopInfo();
+  const info = await getShopInfo();
   const cat = SHOP_CATEGORIES.find((c) => c.value === model.category);
   const related = models.filter((m) => m.category === model.category && m.slug !== model.slug).slice(0, 4);
 
@@ -82,6 +83,8 @@ export default async function ProductDetail({ params }: Props) {
           {model.description && (
             <p className="mt-6 text-[17px] leading-relaxed whitespace-pre-line text-[#1d1d1f]/90">{model.description}</p>
           )}
+
+          <PromotionList promotions={model.promotions} className="mt-8" />
 
           <div className="mt-8">
             <ProductConfigurator

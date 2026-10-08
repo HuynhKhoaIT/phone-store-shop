@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { getShopCatalog, SHOP_CATEGORIES } from "@/lib/shop";
 import { getPosts, type PostSummary } from "@/lib/news";
 import { siteUrl } from "@/lib/site";
+import { getPromotions } from "@/lib/promotions";
 
 // Lấy dữ liệu lúc có request (build không cần gọi API quản trị); API đã cache 60s
 export const dynamic = "force-dynamic";
@@ -22,9 +23,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${base}/products?cond=used`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${base}/sua-chua`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/tin-tuc`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
+    { url: `${base}/khuyen-mai`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
   ];
 
-  const [catalog, posts] = await Promise.all([getShopCatalog().catch(() => null), getAllPosts().catch(() => [])]);
+  const [catalog, posts, promotions] = await Promise.all([
+    getShopCatalog().catch(() => null),
+    getAllPosts().catch(() => []),
+    getPromotions(true),
+  ]);
+  for (const p of promotions)
+    pages.push({ url: `${base}/khuyen-mai/${p.slug}`, lastModified: now, changeFrequency: "weekly", priority: 0.7 });
   for (const m of catalog?.models ?? []) {
     pages.push({
       url: `${base}/p/${m.slug}`,

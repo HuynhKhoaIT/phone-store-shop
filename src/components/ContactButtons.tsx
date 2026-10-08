@@ -1,9 +1,9 @@
 import { MessageCircle, Phone } from "lucide-react";
 import { getShopInfo } from "@/lib/shop";
 
-/** Nút liên hệ mua hàng (Zalo / gọi điện) — cấu hình bằng SHOP_PHONE, SHOP_ZALO. */
-export function ContactButtons({ className = "", dark = false }: { className?: string; dark?: boolean }) {
-  const info = getShopInfo();
+/** Nút liên hệ mua hàng (Zalo / gọi điện) — hotline / Zalo của cửa hàng đầu tiên (cài đặt ở trang quản trị). */
+export async function ContactButtons({ className = "", dark = false }: { className?: string; dark?: boolean }) {
+  const info = await getShopInfo();
   if (!info.phoneHref && !info.zaloHref) return null;
   return (
     <div className={`flex flex-wrap gap-3 ${className}`}>

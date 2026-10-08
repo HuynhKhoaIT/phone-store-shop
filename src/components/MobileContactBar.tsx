@@ -5,8 +5,8 @@ import { getShopInfo } from "@/lib/shop";
  * Thanh Zalo / Gọi dính đáy màn hình, chỉ trên điện thoại: khách xem máy bằng điện thoại là chủ yếu,
  * không phải cuộn tìm nút liên hệ. Layout chừa padding đáy cho body để thanh không che footer.
  */
-export function MobileContactBar() {
-  const info = getShopInfo();
+export async function MobileContactBar() {
+  const info = await getShopInfo();
   if (!info.phoneHref && !info.zaloHref) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-30 border-t border-black/5 bg-white/85 px-4 pt-2.5 pb-[calc(0.625rem+env(safe-area-inset-bottom))] backdrop-blur-xl backdrop-saturate-150 md:hidden">

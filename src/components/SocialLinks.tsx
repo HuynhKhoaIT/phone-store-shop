@@ -17,9 +17,9 @@ function TikTokIcon({ size = 18 }: { size?: number }) {
   );
 }
 
-/** Danh sách mạng xã hội đã cấu hình (SHOP_FACEBOOK, SHOP_TIKTOK); chưa đặt link nào thì rỗng. */
-export function socialLinks() {
-  const info = getShopInfo();
+/** Mạng xã hội đã cài đặt (link Facebook / TikTok của chi nhánh bên quản trị); chưa có link nào thì rỗng. */
+export async function socialLinks() {
+  const info = await getShopInfo();
   return [
     info.facebookHref && { href: info.facebookHref, label: "Facebook", Icon: FacebookIcon },
     info.tiktokHref && { href: info.tiktokHref, label: "TikTok", Icon: TikTokIcon },
@@ -27,8 +27,8 @@ export function socialLinks() {
 }
 
 /** Nút tròn Facebook / TikTok. `dark` = đặt trên nền đen. */
-export function SocialButtons({ dark = false, className = "" }: { dark?: boolean; className?: string }) {
-  const links = socialLinks();
+export async function SocialButtons({ dark = false, className = "" }: { dark?: boolean; className?: string }) {
+  const links = await socialLinks();
   if (links.length === 0) return null;
   return (
     <div className={`flex gap-3 ${className}`}>
@@ -52,8 +52,8 @@ export function SocialButtons({ dark = false, className = "" }: { dark?: boolean
 }
 
 /** Dòng chữ có icon cho footer. */
-export function SocialList() {
-  return socialLinks().map(({ href, label, Icon }) => (
+export async function SocialList() {
+  return (await socialLinks()).map(({ href, label, Icon }) => (
     <li key={label}>
       <a href={href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 hover:underline">
         <Icon size={16} />

@@ -1,6 +1,8 @@
 import "server-only";
 import { isRealImage, lowestPrice, priceRank, slugify } from "./format";
-import { STORES, telHref } from "./stores";
+import { cache } from "react";
+import { telHref, type Store } from "./stores";
+import type { PromotionBadge } from "./promotions";
 
 /**
  * Dữ liệu trang bán hàng, lấy từ API công khai của trang quản trị (phone-store-manager, /api/public/*).
@@ -42,6 +44,8 @@ type ApiProduct = {
   images: string[];
   description: string | null;
   updatedAt: string;
+  /** Chương trình khuyến mãi đang áp dụng (trang quản trị bản cũ chưa có trường này) */
+  promotions?: PromotionBadge[];
 };
 type ApiPage = { items: ApiProduct[]; page: number; totalPages: number };
 
@@ -80,6 +84,8 @@ export type ShopModel = {
   hasUsed: boolean;
   /** Số sản phẩm đang bán (với điện thoại = số máy) */
   count: number;
+  /** Chương trình khuyến mãi áp dụng cho ít nhất một máy của dòng (không trùng) */
+  promotions: PromotionBadge[];
   /** Thời điểm cập nhật gần nhất (ms) để sắp xếp "Mới về" */
   latestAt: number;
   units: ShopUnit[];
@@ -131,6 +137,7 @@ export async function getShopCatalog() {
         hasNew: false,
         hasUsed: false,
         count: 0,
+        promotions: [],
         latestAt: 0,
         units: [],
       };
@@ -145,6 +152,8 @@ export async function getShopCatalog() {
     if (p.condition === "USED") m.hasUsed = true;
     else m.hasNew = true;
     m.count++;
+    for (const promo of p.promotions ?? [])
+      if (!m.promotions.some((x) => x.slug === promo.slug)) m.promotions.push(promo);
     m.latestAt = Math.max(m.latestAt, Date.parse(p.updatedAt) || 0);
     m.units.push({
       id: p.id,
@@ -208,16 +217,39 @@ export async function getRepairPrices() {
     .sort((a, b) => b.items.length - a.items.length);
 }
 
-/** Thông tin liên hệ: hotline mặc định = cơ sở chính (src/lib/stores.ts), ghi đè bằng SHOP_PHONE / SHOP_ZALO. */
-export function getShopInfo() {
-  const phone = process.env.SHOP_PHONE?.trim() || STORES[0]?.phone || null;
-  const zalo = process.env.SHOP_ZALO?.trim() || phone;
+/** Cửa hàng hiện trên web (admin nhập ở trang quản trị › Chi nhánh). API lỗi thì trả rỗng để trang vẫn hiện được. */
+export const getStores = cache(async (): Promise<Store[]> => {
+  try {
+    return (await getJson<{ items: Store[] }>("/branches"))?.items ?? [];
+  } catch (e) {
+    console.error(e);
+    return [];
+  }
+});
+
+/** Tên cửa hàng (SHOP_NAME) — không cần gọi API */
+export function shopName() {
+  return process.env.SHOP_NAME?.trim() || "Tài Khoa Mobile";
+}
+
+/**
+ * Thông tin liên hệ chung của web: hotline / Zalo = cửa hàng đầu tiên, Facebook / TikTok = cửa hàng đầu tiên có link.
+ * Lấy từ cài đặt chi nhánh bên quản trị; biến môi trường SHOP_PHONE / SHOP_ZALO / SHOP_FACEBOOK / SHOP_TIKTOK
+ * chỉ dùng khi bên quản trị chưa nhập (hoặc API lỗi).
+ */
+export const getShopInfo = cache(async () => {
+  const stores = await getStores();
+  const main = stores.find((s) => s.phone || s.zaloUrl);
+  const phone = main?.phone || process.env.SHOP_PHONE?.trim() || null;
+  const envZalo = process.env.SHOP_ZALO?.trim() || process.env.SHOP_PHONE?.trim();
   return {
-    name: process.env.SHOP_NAME?.trim() || "Tài Khoa Mobile",
+    name: shopName(),
     phone,
     phoneHref: phone ? telHref(phone) : null,
-    zaloHref: zalo ? `https://zalo.me/${zalo.replace(/\D/g, "")}` : null,
-    facebookHref: process.env.SHOP_FACEBOOK?.trim() || null,
-    tiktokHref: process.env.SHOP_TIKTOK?.trim() || null,
+    zaloHref:
+      main?.zaloUrl ||
+      (envZalo ? `https://zalo.me/${envZalo.replace(/\D/g, "").replace(/^84(?=\d{9}$)/, "0")}` : null),
+    facebookHref: stores.find((s) => s.facebookUrl)?.facebookUrl || process.env.SHOP_FACEBOOK?.trim() || null,
+    tiktokHref: stores.find((s) => s.tiktokUrl)?.tiktokUrl || process.env.SHOP_TIKTOK?.trim() || null,
   };
-}
+});

@@ -11,6 +11,8 @@ Dữ liệu lấy từ **API công khai của trang quản trị** [`phone-store
 |---|---|
 | `/` | Hero (sản phẩm nổi bật), ô danh mục, carousel "Nổi bật" và "Mới về", máy cũ, phụ kiện, dịch vụ sửa chữa, danh sách cửa hàng + nút liên hệ |
 | `/products` | Danh sách, lọc theo `cat` (iphone / android / accessory), `cond` (new / used), sắp xếp, tìm kiếm không dấu |
+| `/khuyen-mai` | Chương trình khuyến mãi đang diễn ra + sắp diễn ra |
+| `/khuyen-mai/[slug]` | Chi tiết chương trình: thể lệ, thời gian, cửa hàng áp dụng, sản phẩm áp dụng |
 | `/tin-tuc` | Tin tức / Khuyến mãi / Mẹo hay: lọc chuyên mục, tìm kiếm, phân trang |
 | `/tin-tuc/[slug]` | Bài viết + bài liên quan (bài khuyến mãi có thêm nút liên hệ) |
 | `/p/[slug]` | Chi tiết dòng máy: ảnh, mô tả, chọn Tình trạng → Dung lượng → Màu → (máy cũ) chọn máy theo % pin, giá khuyến mãi, nút liên hệ kèm mã SP |
@@ -25,7 +27,8 @@ Toàn bộ nằm trong `src/lib/shop.ts`:
 | `GET /api/public/repair-prices` | Mục "Sửa chữa" (không có thì ẩn mục) |
 | `GET /api/public/posts`, `/posts/:slug` | Tin tức (`src/lib/news.ts`); admin viết bài ở Quản lý → Tin tức. Không có thì ẩn mục "Tin mới" |
 
-- **Địa chỉ, hotline các cơ sở**: sửa trong `src/lib/stores.ts` (cơ sở đầu tiên = hotline chính của nút Gọi / Zalo).
+- **Cửa hàng** (`GET /api/public/branches`): địa chỉ, hotline, Zalo, Facebook, TikTok, giờ mở cửa, bản đồ — admin nhập ở trang quản trị › Chi nhánh. Cửa hàng đầu tiên = hotline / Zalo chính của nút Gọi / Zalo.
+- **Khuyến mãi** (`GET /api/public/promotions`, `/promotions/:slug`, trường `promotions` của sản phẩm): admin tạo ở Quản lý › Khuyến mãi. Giảm giá đã trừ sẵn vào `finalPrice`.
 - Sản phẩm không có ảnh (hoặc link ảnh lỗi) → ảnh mặc định theo loại (`public/images/products/*.svg`: iPhone, Android, củ sạc, cáp, tai nghe, ốp lưng, kính cường lực, sạc dự phòng, đồng hồ; phụ kiện chọn theo từ khoá trong tên — xem `ProductImage.tsx`).
 - Ảnh, mô tả, giá khuyến mãi, nổi bật / thứ tự, ẩn / hiện trên web: **admin quản lý ở trang quản trị**.
 - Response được cache **60 giây**, nên thay đổi bên quản trị sẽ hiện lên web chậm tối đa khoảng 1 phút.
@@ -39,7 +42,7 @@ cp .env.example .env   # ADMIN_API_URL=http://localhost:3002, SHOP_NAME, SHOP_PH
 npm run dev            # http://localhost:3001 — cần trang quản trị đang chạy ở :3002 (npm run dev bên phone-store-manager)
 ```
 
-Nút Zalo / Gọi dùng hotline cơ sở chính; đặt `SHOP_PHONE` / `SHOP_ZALO` nếu muốn số khác.
+Nút Zalo / Gọi dùng hotline / Zalo của cửa hàng đầu tiên (cài ở trang quản trị); `SHOP_PHONE` / `SHOP_ZALO` chỉ là dự phòng khi chưa nhập.
 
 ## Deploy (Vercel)
 

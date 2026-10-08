@@ -30,7 +30,8 @@ Biến môi trường: xem `.env.example` (`ADMIN_API_URL` bắt buộc; `SHOP_N
 |---|---|
 | `src/lib/shop.ts` | Gọi API quản trị (`getJson`, cache 60 giây), gom sản phẩm thành **dòng máy** (`ShopModel`: cùng loại + cùng tên, `slug` = tên bỏ dấu), thông tin liên hệ (`getShopInfo`). Chỉ chạy trên server (`server-only`) |
 | `src/lib/news.ts` | Tin tức (`/api/public/posts`) |
-| `src/lib/stores.ts` | Địa chỉ, hotline các cơ sở — sửa trực tiếp ở đây. Cơ sở đầu tiên = hotline chính |
+| `src/lib/promotions.ts` | Chương trình khuyến mãi (`/api/public/promotions`); sản phẩm mang `promotions` → `ShopModel.promotions` |
+| `src/lib/stores.ts` | Kiểu `Store` (cửa hàng từ `/api/public/branches`, lấy bằng `getStores()` trong `shop.ts`). Admin nhập địa chỉ / hotline / Zalo / mạng xã hội / bản đồ ở trang quản trị › Chi nhánh; cửa hàng đầu tiên = hotline chính. `getShopInfo()` (async) gom liên hệ chung, biến `SHOP_*` chỉ là dự phòng |
 | `src/lib/format.ts` | Định dạng dùng chung (`formatVND`, `slugify`, `capacityLabel`, nhãn loại/tình trạng…). Giữ giống `format.ts` bên quản trị |
 | `src/components/ProductImage.tsx` | Ảnh sản phẩm; link lỗi hoặc không có ảnh → ảnh mặc định theo loại / từ khoá tên (`public/images/products/*.svg`) |
 | `src/components/ShopNav.tsx` | Thanh điều hướng; trên điện thoại là menu thả xuống |

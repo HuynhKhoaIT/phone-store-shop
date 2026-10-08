@@ -3,6 +3,7 @@ import {
   BadgeCheck,
   BatteryFull,
   ChevronRight,
+  Clock,
   CreditCard,
   MapPin,
   Navigation,
@@ -11,20 +12,25 @@ import {
   Wrench,
 } from "lucide-react";
 import { formatVND, slugify } from "@/lib/format";
-import { getShopCatalog, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
-import { STORES, mapHref, telHref } from "@/lib/stores";
+import { getShopCatalog, getStores, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
+import { telHref } from "@/lib/stores";
 import { getPosts } from "@/lib/news";
+import { getPromotions } from "@/lib/promotions";
 import { ContactButtons } from "@/components/ContactButtons";
 import { SocialButtons, socialLinks } from "@/components/SocialLinks";
 import { PostCard } from "@/components/PostCard";
+import { PromotionCard } from "@/components/PromotionCard";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
 
 export default async function Home() {
-  const [{ models, featured, services, maxWarranty }, news] = await Promise.all([
+  const [{ models, featured, services, maxWarranty }, news, stores, socials, promotions] = await Promise.all([
     getShopCatalog(),
     // Tin tức không bắt buộc: API lỗi thì ẩn mục, không làm hỏng trang chủ
     getPosts({ pageSize: 3 }).catch(() => null),
+    getStores(),
+    socialLinks(),
+    getPromotions(),
   ]);
 
   // Hero: sản phẩm admin đánh dấu nổi bật đầu tiên; chưa có thì iPhone mới về gần nhất / sản phẩm mới nhất
@@ -69,6 +75,25 @@ export default async function Home() {
           );
         })}
       </section>
+
+      {/* Khuyến mãi đang diễn ra (admin tạo ở trang quản trị › Khuyến mãi) */}
+      {promotions.length > 0 && (
+        <section className="container-shop mt-24">
+          <div className="flex items-end justify-between gap-4">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-5xl">
+              Khuyến mãi. <span className="text-[#6e6e73]">Đang diễn ra.</span>
+            </h2>
+            <Link href="/khuyen-mai" className="inline-flex shrink-0 items-center text-[15px] text-accent hover:underline">
+              Xem tất cả <ChevronRight size={16} aria-hidden />
+            </Link>
+          </div>
+          <div className="mt-8 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            {promotions.slice(0, 3).map((p) => (
+              <PromotionCard key={p.id} promo={p} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {picks.length > 0 && (
         <Carousel title="Nổi bật." subtitle="Được chọn riêng cho bạn." href="/products" models={picks} />
@@ -183,27 +208,51 @@ export default async function Home() {
             Thử trước khi mua.
           </h2>
           <ul className="mt-10 grid gap-3 md:grid-cols-2">
-            {STORES.map((st) => (
-              <li key={st.name} className="flex flex-col rounded-2xl bg-white/10 p-6">
-                <p className="text-[19px] font-semibold tracking-tight">{st.name}</p>
-                <p className="mt-2 flex gap-2 text-[15px] text-white/75">
-                  <MapPin size={18} className="mt-0.5 shrink-0 text-accent-bright" aria-hidden />
-                  {st.address}
-                </p>
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <a href={telHref(st.phone)} className="btn-accent">
-                    <Phone size={18} aria-hidden />
-                    {st.phone}
-                  </a>
-                  <a href={mapHref(st.address)} target="_blank" rel="noopener noreferrer" className="btn-outline text-white">
-                    <Navigation size={18} aria-hidden />
-                    Chỉ đường
-                  </a>
+            {stores.map((st) => (
+              <li key={st.id} className="flex flex-col overflow-hidden rounded-2xl bg-white/10">
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-[19px] font-semibold tracking-tight">{st.name}</p>
+                  {st.address && (
+                    <p className="mt-2 flex gap-2 text-[15px] text-white/75">
+                      <MapPin size={18} className="mt-0.5 shrink-0 text-accent-bright" aria-hidden />
+                      {st.address}
+                    </p>
+                  )}
+                  {st.openingHours && (
+                    <p className="mt-1.5 flex gap-2 text-[15px] text-white/75">
+                      <Clock size={18} className="mt-0.5 shrink-0 text-accent-bright" aria-hidden />
+                      {st.openingHours}
+                    </p>
+                  )}
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {st.phone && (
+                      <a href={telHref(st.phone)} className="btn-accent">
+                        <Phone size={18} aria-hidden />
+                        {st.phone}
+                      </a>
+                    )}
+                    {st.mapUrl && (
+                      <a href={st.mapUrl} target="_blank" rel="noopener noreferrer" className="btn-outline text-white">
+                        <Navigation size={18} aria-hidden />
+                        Chỉ đường
+                      </a>
+                    )}
+                  </div>
                 </div>
+                {/* Bản đồ nhúng — vị trí admin dán link Google Maps ở trang quản trị */}
+                {st.mapEmbedUrl && (
+                  <iframe
+                    src={st.mapEmbedUrl}
+                    title={`Bản đồ ${st.name}`}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    className="h-56 w-full border-0 grayscale-[0.2]"
+                  />
+                )}
               </li>
             ))}
           </ul>
-          {socialLinks().length > 0 && (
+          {socials.length > 0 && (
             <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
               <p className="text-[15px] text-white/75">Theo dõi máy mới về, khuyến mãi:</p>
               <SocialButtons dark />

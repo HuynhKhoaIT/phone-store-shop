@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
-import { STORES, mapHref, telHref } from "@/lib/stores";
+import { getShopInfo, getStores, shopName, SHOP_CATEGORIES } from "@/lib/shop";
+import { telHref } from "@/lib/stores";
 import { ShopNav } from "@/components/ShopNav";
 import { MobileContactBar } from "@/components/MobileContactBar";
 import { SocialList } from "@/components/SocialLinks";
@@ -12,7 +12,7 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { name } = getShopInfo();
+  const name = shopName();
   return {
     title: { default: `${name} — Điện thoại & phụ kiện`, template: `%s | ${name}` },
     description: `${name}: iPhone, Android, phụ kiện và máy cũ giá tốt, bảo hành tại cửa hàng.`,
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const info = getShopInfo();
+  const [info, stores] = await Promise.all([getShopInfo(), getStores()]);
 
   return (
     <html lang="vi">
@@ -58,8 +58,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                   </Link>
                 </li>
                 <li>
+                  <Link href="/khuyen-mai" className="hover:underline">
+                    Khuyến mãi
+                  </Link>
+                </li>
+                <li>
                   <Link href="/tin-tuc" className="hover:underline">
-                    Tin tức & khuyến mãi
+                    Tin tức
                   </Link>
                 </li>
               </ul>
@@ -67,18 +72,26 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <div>
               <p className="font-semibold text-[#1d1d1f]">Hệ thống cửa hàng</p>
               <ul className="mt-3 space-y-4">
-                {STORES.map((s) => (
-                  <li key={s.name}>
+                {stores.map((s) => (
+                  <li key={s.id}>
                     <p className="text-[#1d1d1f]">{s.name}</p>
-                    <a href={mapHref(s.address)} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      {s.address}
-                    </a>
-                    <p>
-                      Hotline:{" "}
-                      <a href={telHref(s.phone)} className="text-[#1d1d1f] hover:underline">
-                        {s.phone}
-                      </a>
-                    </p>
+                    {s.address &&
+                      (s.mapUrl ? (
+                        <a href={s.mapUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                          {s.address}
+                        </a>
+                      ) : (
+                        <p>{s.address}</p>
+                      ))}
+                    {s.openingHours && <p>{s.openingHours}</p>}
+                    {s.phone && (
+                      <p>
+                        Hotline:{" "}
+                        <a href={telHref(s.phone)} className="text-[#1d1d1f] hover:underline">
+                          {s.phone}
+                        </a>
+                      </p>
+                    )}
                   </li>
                 ))}
               </ul>
