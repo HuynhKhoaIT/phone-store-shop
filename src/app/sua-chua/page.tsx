@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Search, ShieldCheck, Wrench } from "lucide-react";
 import { formatPrice, slugify } from "@/lib/format";
-import { getRepairPrices } from "@/lib/shop";
+import { getRepairPrices, type RepairPrice } from "@/lib/shop";
 import { ContactButtons } from "@/components/ContactButtons";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default async function Repair({ searchParams }: { searchParams: Promise<{
     .map((g) => ({
       ...g,
       items: g.items.filter((r) => {
-        const hay = slugify(`${r.service} ${r.device}`);
+        const hay = slugify(`${r.service} ${r.device} ${r.variant ?? ""}`);
         return words.every((w) => hay.includes(w));
       }),
     }))
@@ -91,23 +91,36 @@ export default async function Repair({ searchParams }: { searchParams: Promise<{
                     {g.service}
                   </h2>
                   <ul className="mt-5 divide-y divide-[#d2d2d7] border-y border-[#d2d2d7]">
-                    {g.items.map((r) => (
-                      <li key={r.device} className="flex items-center justify-between gap-4 py-4">
-                        <div className="min-w-0">
-                          <p className="text-[17px] font-medium">{r.device}</p>
-                          {r.warranty && (
-                            <p className="mt-0.5 flex items-center gap-1.5 text-[14px] text-[#6e6e73]">
-                              <ShieldCheck size={15} aria-hidden /> Bảo hành {r.warranty}
-                            </p>
-                          )}
-                        </div>
-                        <p
-                          className={`shrink-0 text-[17px] font-semibold tabular-nums ${r.price > 0 ? "" : "text-accent"}`}
-                        >
-                          {formatPrice(r.price)}
-                        </p>
-                      </li>
-                    ))}
+                    {byDevice(g.items).map(([device, variants]) =>
+                      variants.length === 1 && !variants[0].variant ? (
+                        <li key={device} className="flex items-center justify-between gap-4 py-4">
+                          <div className="min-w-0">
+                            <p className="text-[17px] font-medium">{device}</p>
+                            <Warranty text={variants[0].warranty} />
+                          </div>
+                          <Price value={variants[0].price} />
+                        </li>
+                      ) : (
+                        // Nhiều loại linh kiện (Zin, OLED, Incell...): mỗi loại một dòng giá
+                        <li key={device} className="py-4">
+                          <p className="text-[17px] font-medium">{device}</p>
+                          <ul className="mt-2 space-y-2">
+                            {variants.map((v) => (
+                              <li
+                                key={v.variant ?? ""}
+                                className="flex items-center justify-between gap-4 rounded-xl bg-[#f5f5f7] px-4 py-2.5"
+                              >
+                                <div className="min-w-0">
+                                  <p className="text-[15px]">{v.variant || "Tiêu chuẩn"}</p>
+                                  <Warranty text={v.warranty} />
+                                </div>
+                                <Price value={v.price} />
+                              </li>
+                            ))}
+                          </ul>
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </section>
               ))}
@@ -127,5 +140,27 @@ export default async function Repair({ searchParams }: { searchParams: Promise<{
         </>
       )}
     </div>
+  );
+}
+
+/** Gom các loại linh kiện của cùng một dòng máy (API đã sắp liền nhau theo giá) */
+function byDevice(items: RepairPrice[]) {
+  const map = new Map<string, RepairPrice[]>();
+  for (const r of items) map.set(r.device, [...(map.get(r.device) ?? []), r]);
+  return [...map];
+}
+
+function Warranty({ text }: { text: string | null }) {
+  if (!text) return null;
+  return (
+    <p className="mt-0.5 flex items-center gap-1.5 text-[14px] text-[#6e6e73]">
+      <ShieldCheck size={15} aria-hidden /> Bảo hành {text}
+    </p>
+  );
+}
+
+function Price({ value }: { value: number }) {
+  return (
+    <p className={`shrink-0 text-[17px] font-semibold tabular-nums ${value > 0 ? "" : "text-accent"}`}>{formatPrice(value)}</p>
   );
 }

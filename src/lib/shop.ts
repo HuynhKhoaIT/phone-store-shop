@@ -201,7 +201,14 @@ export async function getShopCatalog() {
 }
 
 /** Một dòng trong bảng giá sửa chữa (/api/public/repair-prices). */
-export type RepairPrice = { service: string; device: string; price: number; warranty: string | null };
+/** `variant`: loại linh kiện (Zin, OLED, Incell...) — một dịch vụ × dòng máy có thể có nhiều dòng khác loại. */
+export type RepairPrice = {
+  service: string;
+  device: string;
+  variant?: string | null;
+  price: number;
+  warranty: string | null;
+};
 
 /** Bảng giá sửa chữa gom theo dịch vụ (dịch vụ nhiều dòng máy lên trước). Endpoint chưa có → rỗng. */
 export async function getRepairPrices() {
