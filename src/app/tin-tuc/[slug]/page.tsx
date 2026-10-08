@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { getPost } from "@/lib/news";
+import { siteUrl } from "@/lib/site";
 import { ContactButtons } from "@/components/ContactButtons";
 import { PostCard, PostMeta } from "@/components/PostCard";
+import { ShareButtons } from "@/components/ShareButtons";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -12,11 +14,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getPost((await params).slug);
   if (!data) return { title: "Không tìm thấy bài viết" };
   const { post } = data;
+  const url = `${siteUrl()}/tin-tuc/${post.slug}`;
   return {
     title: post.title,
     description: post.excerpt,
+    alternates: { canonical: url },
+    // Ảnh / tiêu đề xem trước khi chia sẻ lên Facebook, Zalo...
     openGraph: {
       type: "article",
+      url,
       title: post.title,
       description: post.excerpt,
       publishedTime: post.publishedAt,
@@ -43,6 +49,7 @@ export default async function Article({ params }: Props) {
           <h1 className="mt-3 text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">{post.title}</h1>
           {post.excerpt && <p className="mt-4 text-xl leading-relaxed text-[#6e6e73]">{post.excerpt}</p>}
           {post.author && <p className="mt-4 text-[15px]">Bởi {post.author}</p>}
+          <ShareButtons title={post.title} className="mt-6" />
         </div>
 
         {post.coverImageUrl && (
@@ -54,6 +61,11 @@ export default async function Article({ params }: Props) {
 
         {/* contentHtml đã được trang quản trị làm sạch (không có HTML viết tay, chỉ link an toàn) */}
         <div className="prose-shop mx-auto mt-10 max-w-[720px]" dangerouslySetInnerHTML={{ __html: post.contentHtml }} />
+
+        {/* Đọc xong mới hay muốn chia sẻ — nhắc lại ở cuối bài */}
+        <div className="mx-auto mt-10 max-w-[720px] border-t border-[#d2d2d7] pt-6">
+          <ShareButtons title={post.title} />
+        </div>
 
         {post.category === "PROMOTION" && (
           <div className="mx-auto mt-12 max-w-[720px] rounded-3xl bg-[#f5f5f7] p-7">

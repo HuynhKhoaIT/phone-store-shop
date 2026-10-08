@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
 import { CATEGORY_LABEL, formatVND } from "@/lib/format";
 import { getShopCatalog, getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
+import { siteUrl } from "@/lib/site";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductConfigurator } from "@/components/ProductConfigurator";
 import { ProductGallery } from "@/components/ProductGallery";
+import { ShareButtons } from "@/components/ShareButtons";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -18,10 +20,20 @@ async function findModel(slug: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { model } = await findModel((await params).slug);
   if (!model) return { title: "Không tìm thấy sản phẩm" };
+  const description = `${model.name}${model.minPrice > 0 ? ` giá từ ${formatVND(model.minPrice)}` : ", liên hệ để được báo giá"}. Xem các phiên bản đang có tại cửa hàng.`;
+  const url = `${siteUrl()}/p/${model.slug}`;
   return {
     title: model.name,
-    description: `${model.name}${model.minPrice > 0 ? ` giá từ ${formatVND(model.minPrice)}` : ", liên hệ để được báo giá"}. Xem các phiên bản đang có tại cửa hàng.`,
-    openGraph: model.imageUrl ? { images: [model.imageUrl] } : undefined,
+    description,
+    alternates: { canonical: url },
+    // Ảnh / tiêu đề xem trước khi chia sẻ lên Facebook, Zalo...
+    openGraph: {
+      type: "website",
+      url,
+      title: model.name,
+      description,
+      images: model.imageUrl ? [model.imageUrl] : undefined,
+    },
   };
 }
 
@@ -65,6 +77,7 @@ export default async function ProductDetail({ params }: Props) {
           </p>
           <h1 className="mt-1 text-4xl font-semibold tracking-tight sm:text-5xl">{model.name}</h1>
           <p className="mt-2 text-[17px] text-[#6e6e73]">{model.brand ?? CATEGORY_LABEL[model.category]}</p>
+          <ShareButtons title={model.name} className="mt-4" />
 
           {model.description && (
             <p className="mt-6 text-[17px] leading-relaxed whitespace-pre-line text-[#1d1d1f]/90">{model.description}</p>
