@@ -22,7 +22,7 @@ npm run build        # build production
 - **Không chạy `npm run build` khi `npm run dev` đang chạy.** Cả hai ghi vào `.next`, build sẽ làm dev server mất CSS (trang hiện HTML trơn, `layout.css` 404). Nếu đã lỡ: dừng dev, xoá `.next`, chạy lại `npm run dev`. Muốn build thì hỏi người dùng trước.
 - Không có ESLint script hay test.
 
-Biến môi trường: xem `.env.example` (`ADMIN_API_URL` bắt buộc; `SHOP_NAME`, `SHOP_PHONE`, `SHOP_ZALO`, `SHOP_FACEBOOK` tuỳ chọn).
+Biến môi trường: xem `.env.example` (`ADMIN_API_URL` bắt buộc; `SHOP_NAME`, `SHOP_PHONE`, `SHOP_ZALO`, `SHOP_FACEBOOK`, `SHOP_TIKTOK` tuỳ chọn).
 
 ## Cấu trúc
 

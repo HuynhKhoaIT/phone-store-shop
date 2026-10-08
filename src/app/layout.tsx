@@ -5,6 +5,7 @@ import { getShopInfo, SHOP_CATEGORIES } from "@/lib/shop";
 import { STORES, mapHref, telHref } from "@/lib/stores";
 import { ShopNav } from "@/components/ShopNav";
 import { MobileContactBar } from "@/components/MobileContactBar";
+import { SocialList } from "@/components/SocialLinks";
 import "./globals.css";
 
 // Render theo request (không cần DB lúc build); dữ liệu đã được cache 60s trong lib/shop.ts
@@ -100,13 +101,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     </a>
                   </li>
                 )}
-                {info.facebookHref && (
-                  <li>
-                    <a href={info.facebookHref} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      Facebook
-                    </a>
-                  </li>
-                )}
+                <SocialList />
               </ul>
             </div>
           </div>

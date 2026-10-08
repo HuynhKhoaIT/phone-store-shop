@@ -218,5 +218,6 @@ export function getShopInfo() {
     phoneHref: phone ? telHref(phone) : null,
     zaloHref: zalo ? `https://zalo.me/${zalo.replace(/\D/g, "")}` : null,
     facebookHref: process.env.SHOP_FACEBOOK?.trim() || null,
+    tiktokHref: process.env.SHOP_TIKTOK?.trim() || null,
   };
 }

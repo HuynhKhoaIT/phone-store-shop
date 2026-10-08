@@ -35,7 +35,7 @@ Toàn bộ nằm trong `src/lib/shop.ts`:
 
 ```bash
 npm install
-cp .env.example .env   # ADMIN_API_URL=http://localhost:3002, SHOP_NAME, SHOP_PHONE, SHOP_ZALO, SHOP_FACEBOOK
+cp .env.example .env   # ADMIN_API_URL=http://localhost:3002, SHOP_NAME, SHOP_PHONE, SHOP_ZALO, SHOP_FACEBOOK, SHOP_TIKTOK
 npm run dev            # http://localhost:3001 — cần trang quản trị đang chạy ở :3002 (npm run dev bên phone-store-manager)
 ```
 

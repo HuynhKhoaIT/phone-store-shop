@@ -15,6 +15,7 @@ import { getShopCatalog, SHOP_CATEGORIES, type ShopModel } from "@/lib/shop";
 import { STORES, mapHref, telHref } from "@/lib/stores";
 import { getPosts } from "@/lib/news";
 import { ContactButtons } from "@/components/ContactButtons";
+import { SocialButtons, socialLinks } from "@/components/SocialLinks";
 import { PostCard } from "@/components/PostCard";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
@@ -202,6 +203,12 @@ export default async function Home() {
               </li>
             ))}
           </ul>
+          {socialLinks().length > 0 && (
+            <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <p className="text-[15px] text-white/75">Theo dõi máy mới về, khuyến mãi:</p>
+              <SocialButtons dark />
+            </div>
+          )}
         </div>
       </section>
     </>
